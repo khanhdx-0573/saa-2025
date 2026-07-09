@@ -3,6 +3,22 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Figma: details/background, details/text-primary-1, details/text-primary-2,
+     details/text-secondary-1, details/divider */
+  --details-background: #00101a;
+  --details-text-primary-1: #ffea9e;
+  --details-text-primary-2: #00101a;
+  --details-text-secondary-1: #ffffff;
+  --details-divider: #2e3940;
+
+  /* Figma: details/container-2, details/border, details/dropdown-list-selected (language dropdown) */
+  --details-container-2: #00070c;
+  --details-border: #998c5f;
+  --details-dropdown-list-selected: rgba(255, 234, 158, 0.2);
+
+  /* Figma: mms_A_Header background */
+  --details-header-overlay: rgba(11, 15, 18, 0.8);
 }
 
 @theme inline {
@@ -10,6 +26,19 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --color-details-background: var(--details-background);
+  --color-details-text-primary-1: var(--details-text-primary-1);
+  --color-details-text-primary-2: var(--details-text-primary-2);
+  --color-details-text-secondary-1: var(--details-text-secondary-1);
+  --color-details-divider: var(--details-divider);
+  --color-details-container-2: var(--details-container-2);
+  --color-details-border: var(--details-border);
+  --color-details-dropdown-list-selected: var(--details-dropdown-list-selected);
+  --color-details-header-overlay: var(--details-header-overlay);
+
+  --font-montserrat: var(--font-montserrat);
+  --font-montserrat-alternates: var(--font-montserrat-alternates);
 }
 
 @media (prefers-color-scheme: dark) {

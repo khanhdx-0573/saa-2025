@@ -1,0 +1,13 @@
+{
+  "Header": {
+    "language": "VN"
+  },
+  "Footer": {
+    "copyright": "Bản quyền thuộc về Sun* © 2025"
+  },
+  "LoginPage": {
+    "headlineLine1": "Bắt đầu hành trình của bạn cùng SAA 2025.",
+    "headlineLine2": "Đăng nhập để khám phá!",
+    "googleButton": "LOGIN With Google"
+  }
+}
