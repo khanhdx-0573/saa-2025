@@ -1,0 +1,32 @@
+{
+  "commands": [
+    {
+      "command": "npx tsc --noEmit",
+      "exitCode": 0,
+      "status": "pass",
+      "summary": "no type errors",
+      "ts": "2026-07-10T19:20:00Z"
+    },
+    {
+      "command": "npx eslint components/kudos/kudos-modal.tsx components/kudos/recipient-field.tsx components/kudos/title-field.tsx components/kudos/anonymous-toggle.tsx",
+      "exitCode": 0,
+      "status": "pass",
+      "summary": "no lint errors",
+      "ts": "2026-07-10T19:20:10Z"
+    },
+    {
+      "command": "npm run test",
+      "exitCode": 0,
+      "status": "pass",
+      "summary": "Test Files 3 passed (3); Tests 51 passed (51)",
+      "ts": "2026-07-10T19:20:56Z"
+    },
+    {
+      "command": "npm run test:e2e",
+      "exitCode": 0,
+      "status": "pass",
+      "summary": "5 passed (15.9s) — after removing per-field validation display",
+      "ts": "2026-07-10T19:22:00Z"
+    }
+  ]
+}

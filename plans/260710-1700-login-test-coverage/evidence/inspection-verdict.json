@@ -1,0 +1,19 @@
+{
+  "score": 9.6,
+  "criticalCount": 0,
+  "decision": "SEALED",
+  "acceptanceCovered": [
+    "unit tests cover button render, OAuth click wiring, error display, and error-clear-on-retry — verified via components/auth/google-login-button.test.tsx, 5 tests passing",
+    "e2e tests cover unauthenticated redirect to /login, login page render, and OAuth click wiring without completing real Google OAuth — verified via e2e/login.spec.ts, 3 tests passing, authorize request aborted via page.route before any real Google navigation",
+    "no regressions in existing unit or e2e suites — verified via npm run test (51/51, includes the pre-existing 46) and npm run test:e2e (4/4, includes the pre-existing kudos.spec.ts)",
+    "no new npm dependencies added without approval — confirmed no jest-dom or other package added; assertions use plain Testing Library queries instead"
+  ],
+  "regressionChecked": [
+    "existing lib/kudos unit tests (46) still pass after vitest.config.ts globals:true change",
+    "existing e2e/kudos.spec.ts still passes after e2e/login.spec.ts was added"
+  ],
+  "contractStatus": "MET",
+  "refuted": [],
+  "unproven": [],
+  "reachableRegressions": []
+}

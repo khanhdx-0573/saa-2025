@@ -1,0 +1,11 @@
+{
+  "task": "Fix the Kudos validation-summary banner end-to-end: correct style (bold red text, left-aligned, on the modal's default background, no fill), correct message text (all 4 required fields), remove incorrectly-surfaced per-field 'Không được để trống' errors that don't match the Figma spec, and fix flaky e2e failures caused by stale next-server processes lingering on port 3000 across sessions.",
+  "acceptanceCriteria": [
+    "banner renders bold red text (Montserrat 700, 16px/24px, 0.15px tracking, left-aligned) directly on the modal's default background, with no fill/pill/padding",
+    "banner message includes all 4 actually-required fields (Recipient, Title, Message, Hashtag)",
+    "no per-field 'Không được để trống' borders/text appear anywhere in the modal",
+    "npm run test:e2e passes reliably across repeated back-to-back runs with no manual port cleanup",
+    "a stale next-server process left on port 3000 is auto-detected and killed before the run, without risking an unrelated process",
+    "no regressions in the existing unit or e2e suites"
+  ]
+}

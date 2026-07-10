@@ -35,8 +35,20 @@ export async function updateSession(request: NextRequest) {
 
   // IMPORTANT: If you remove getClaims() and you use server-side rendering
   // with the Supabase client, your users may be randomly logged out.
-  const { data } = await supabase.auth.getClaims()
-  const user = data?.claims
+  //
+  // getClaims() throws (rather than returning an `error`) when the browser's
+  // refresh token cookie is stale/revoked (e.g. expired, or the auth database
+  // was reset) — treat that the same as "no session" instead of letting it
+  // crash the request.
+  async function getClaimsSafely() {
+    try {
+      const { data } = await supabase.auth.getClaims()
+      return data?.claims
+    } catch {
+      return undefined
+    }
+  }
+  const user = await getClaimsSafely()
 
   if (
     !user &&

@@ -1,0 +1,21 @@
+{
+  "generated_at": "2026-07-09T11:37:40Z",
+  "plan": "260709-1726-kudos-write-feature",
+  "features": [
+    {
+      "fcode": "F001",
+      "name": "Send Kudos",
+      "slug": "F001_SendKudos",
+      "priority": "P2",
+      "type": "mixed",
+      "related": {
+        "screens": [],
+        "user_stories": ["US001", "US002", "US003", "US004", "US005"],
+        "routes": [],
+        "models": [],
+        "bl": [],
+        "perms": []
+      }
+    }
+  ]
+}

@@ -9,5 +9,63 @@
     "headlineLine1": "Bắt đầu hành trình của bạn cùng SAA 2025.",
     "headlineLine2": "Đăng nhập để khám phá!",
     "googleButton": "LOGIN With Google"
+  },
+  "KudosPage": {
+    "writeKudoButton": "Viết Kudo"
+  },
+  "KudosModal": {
+    "noHashtagsAvailable": "Chưa có hashtag nào",
+    "title": "Gửi lời cám ơn và ghi nhận đến đồng\nđội",
+    "recipientLabel": "Người nhận",
+    "recipientPlaceholder": "Tìm kiếm",
+    "recipientNoResults": "Không tìm thấy Sunner phù hợp",
+    "unknownUser": "Người dùng không xác định",
+    "titleLabel": "Danh hiệu",
+    "titlePlaceholder": "Dành tặng một danh hiệu cho đồng đội",
+    "titleHelper": "Ví dụ: Người truyền động lực cho tôi.\nDanh hiệu sẽ hiển thị làm tiêu đề Kudos của bạn.",
+    "contentPlaceholder": "Hãy gửi gắm lời cám ơn và ghi nhận đến đồng đội tại đây nhé!",
+    "contentHelper": "Bạn có thể “@ + tên” để nhắc tới đồng nghiệp khác",
+    "contentCounter": "{count}/1.000",
+    "toolbar": {
+      "bold": "Đậm",
+      "italic": "Nghiêng",
+      "strike": "Gạch ngang",
+      "orderedList": "Danh sách đánh số",
+      "link": "Liên kết",
+      "quote": "Trích dẫn"
+    },
+    "communityStandards": "Tiêu chuẩn cộng đồng",
+    "linkDialog": {
+      "title": "Thêm đường dẫn",
+      "textLabel": "Text",
+      "textPlaceholder": "Nhập văn bản hiển thị",
+      "textRequiredError": "Văn bản hiển thị phải từ 1-100 ký tự",
+      "linkLabel": "Link",
+      "placeholder": "https://example.com",
+      "linkInvalidError": "Đường dẫn không hợp lệ",
+      "save": "Lưu",
+      "cancel": "Hủy"
+    },
+    "mention": {
+      "noResults": "Không tìm thấy"
+    },
+    "hashtagLabel": "Hashtag",
+    "addHashtagButton": "Hashtag",
+    "hashtagMaxHint": "Tối đa 5",
+    "hashtagMaxReached": "Tối đa 5 hashtag",
+    "hashtagRemoveAlt": "Xóa hashtag",
+    "imageLabel": "Image",
+    "addImageButton": "Image",
+    "imageMaxHint": "Tối đa 5",
+    "imageInvalidError": "File không hợp lệ (chỉ nhận .jpg/.png, tối đa 5MB)",
+    "imageRemoveAlt": "Xóa ảnh",
+    "anonymousLabel": "Gửi lời cám ơn và ghi nhận ẩn danh",
+    "anonymousNameLabel": "Nickname ẩn danh",
+    "anonymousNamePlaceholder": "Tên hiển thị ẩn danh",
+    "cancelButton": "Hủy",
+    "submitButton": "Gửi",
+    "submitLoading": "Đang gửi...",
+    "submitErrorFallback": "Gửi kudos thất bại. Vui lòng thử lại.",
+    "submitValidationError": "Bạn cần điền đủ Người nhận, Danh hiệu, Lời nhắn gửi và Hashtag để gửi Kudos!"
   }
 }

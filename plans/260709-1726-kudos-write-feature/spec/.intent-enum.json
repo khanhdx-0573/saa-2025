@@ -1,0 +1,5 @@
+{
+  "mode": "single",
+  "intents": ["authenticated user composes and submits a kudos (thank-you note) to a recipient with content, 1-5 hashtags, up to 5 images, and optional anonymity"],
+  "justification": ""
+}

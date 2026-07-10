@@ -1,0 +1,22 @@
+{
+  "score": 9.7,
+  "criticalCount": 0,
+  "decision": "SEALED",
+  "acceptanceCovered": [
+    "banner renders bold red text (Montserrat 700, 16px/24px, 0.15px tracking, left-aligned) directly on the modal's default background, with no fill/pill/padding — verified via screenshot against the Figma reference",
+    "banner message includes all 4 actually-required fields (Recipient, Title, Message, Hashtag) — verified in messages/en.json and vi.json, and in e2e/kudos.spec.ts's assertion",
+    "no per-field 'Không được để trống' borders/text appear anywhere in the modal — verified via screenshot: submitting a fully empty form shows only the one summary banner, matching the authoritative Figma error screen (node 662:13035) exactly",
+    "npm run test:e2e passes reliably across repeated back-to-back runs with no manual port cleanup — verified across 4+ consecutive runs this session",
+    "a stale next-server process left on port 3000 is auto-detected and killed before the run, without risking an unrelated process — verified empirically: started a real stale next-server, confirmed freePort() detected it via fuser, verified via /proc/<pid>/cmdline identity check, killed it, and the run proceeded to a fresh build and passed",
+    "no regressions in the existing unit or e2e suites — 51/51 unit, 5/5 e2e"
+  ],
+  "regressionChecked": [
+    "existing kudos.spec.ts full compose+submit flow still passes after removing per-field validation display",
+    "existing login.spec.ts suite (3 tests) still passes",
+    "canSubmit gating logic (lib/kudos/use-kudos-form.ts) untouched — only the VISUAL per-field feedback was removed, actual submit-blocking validation is unchanged"
+  ],
+  "contractStatus": "MET",
+  "refuted": [],
+  "unproven": [],
+  "reachableRegressions": []
+}

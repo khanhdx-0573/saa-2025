@@ -40,4 +40,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .claude
+release-manifest.json
 resources/
+e2e/.auth/
+test-results/
+playwright-report/
+test-results

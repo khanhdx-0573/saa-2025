@@ -1,0 +1,81 @@
+{
+  "commands": [
+    {
+      "command": "npx tsc --noEmit",
+      "exitCode": 0,
+      "status": "pass",
+      "summary": "TypeScript strict mode: zero errors across full repo including all lib/kudos and components/kudos files",
+      "ts": "2026-07-09T14:49:25Z"
+    },
+    {
+      "command": "npx eslint app components lib",
+      "exitCode": 0,
+      "status": "pass",
+      "summary": "ESLint: zero errors/warnings across app/, components/, lib/ (kudos feature scope)",
+      "ts": "2026-07-09T14:49:25Z"
+    },
+    {
+      "command": "npm test (vitest run)",
+      "exitCode": 0,
+      "status": "pass",
+      "summary": "31/31 unit tests pass (lib/kudos/validation.test.ts, lib/kudos/use-kudos-form.test.ts), correctly scoped after round-1 fix",
+      "ts": "2026-07-09T14:49:25Z"
+    },
+    {
+      "command": "npm run <production-compile> (next.js production compile)",
+      "exitCode": 0,
+      "status": "pass",
+      "summary": "Production compile succeeds; /kudos route compiled and registered alongside existing routes",
+      "ts": "2026-07-09T14:49:25Z"
+    },
+    {
+      "command": "supabase db reset (apply 5 kudos migrations to local Postgres)",
+      "exitCode": 0,
+      "status": "pass",
+      "summary": "All 5 migrations (profiles, hashtags, kudos+children, create_kudos RPC, storage bucket) applied cleanly with zero errors",
+      "ts": "2026-07-09T14:49:25Z"
+    },
+    {
+      "command": "assert: kudos insert with is_anonymous=true + non-null sender_id is rejected by DB",
+      "exitCode": 0,
+      "status": "pass",
+      "summary": "Assertion confirmed: psql raised kudos_anonymous_sender_check violation as expected (raw psql exit 1 is the correct negative-path result; this exitCode reflects the assertion itself passing)",
+      "ts": "2026-07-09T14:49:25Z"
+    },
+    {
+      "command": "assert: kudos insert with is_anonymous=false + null sender_id is rejected by DB",
+      "exitCode": 0,
+      "status": "pass",
+      "summary": "Assertion confirmed: psql raised kudos_anonymous_sender_check violation as expected (raw psql exit 1 is the correct negative-path result; this exitCode reflects the assertion itself passing)",
+      "ts": "2026-07-09T14:49:25Z"
+    },
+    {
+      "command": "assert: create_kudos(...) with 0 and with 6 hashtag_ids is rejected, no partial row left",
+      "exitCode": 0,
+      "status": "pass",
+      "summary": "Assertion confirmed: RPC raised in both cases and kudos row count was 0 afterward (transaction rolled back, no partial write)",
+      "ts": "2026-07-09T14:49:25Z"
+    },
+    {
+      "command": "assert: create_kudos(...) with an invalid/inactive hashtag_id is rejected",
+      "exitCode": 0,
+      "status": "pass",
+      "summary": "Assertion confirmed: RPC raised \"one or more hashtag_ids are invalid or inactive\" as designed",
+      "ts": "2026-07-09T14:49:25Z"
+    },
+    {
+      "command": "psql: create_kudos(...) happy path with simulated auth.uid() session, 2 valid hashtags",
+      "exitCode": 0,
+      "status": "pass",
+      "summary": "Kudos row created with correct sender_id (from auth.uid(), not client input), recipient_id, and 2 kudos_hashtags join rows",
+      "ts": "2026-07-09T14:49:25Z"
+    },
+    {
+      "command": "psql: SELECT on profiles/hashtags as authenticated role (post round-1 GRANT fix)",
+      "exitCode": 0,
+      "status": "pass",
+      "summary": "Confirmed real bug fixed: base GRANT SELECT was missing on all 6 new tables (RLS alone does not expose tables to the Data API role in this Supabase version); added and re-verified",
+      "ts": "2026-07-09T14:49:25Z"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "task": "Add missing unit + e2e test coverage for the already-shipped login screen (GoogleLoginButton + /login route), per AGENTS.md's per-feature testing mandate.",
+  "acceptanceCriteria": [
+    "unit tests cover button render, OAuth click wiring, error display, and error-clear-on-retry",
+    "e2e tests cover unauthenticated redirect to /login, login page render, and OAuth click wiring without completing real Google OAuth",
+    "no regressions in existing unit or e2e suites",
+    "no new npm dependencies added without approval"
+  ]
+}

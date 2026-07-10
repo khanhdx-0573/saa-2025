@@ -19,6 +19,30 @@
 
   /* Figma: mms_A_Header background */
   --details-header-overlay: rgba(11, 15, 18, 0.8);
+
+  /* Figma: Details-Text-Secondary-2, Details-Error (Write Kudo modal, ihQ26W78P2;
+     re-confirmed against the "Lỗi chưa điền đủ thông tin" error screen, 662:13035) */
+  --details-text-secondary-2: #999999;
+  --details-error: #d4271d;
+
+  /* Figma: Details-PrimaryButton-Hover — used as the Write Kudo modal's own
+     background (not a hover state in this context) */
+  --details-modal-background: #fff8e1;
+
+  /* Figma: Details-TextButton-Normal / Details-SecondaryButton-Normal —
+     translucent yellow fills for the editor toolbar buttons and Cancel button */
+  --details-textbutton-normal: rgba(255, 234, 158, 0.1);
+
+  /* Figma: asterisk fill on required-field labels (mms_B.1/E.1), not bound to
+     a named Figma variable in the source file */
+  --details-required-mark: #cf1322;
+
+  /* Figma: remove ("x") button fill on image thumbnails (mms_F.2 Close Tiny) */
+  --details-remove-button: #d4271d;
+
+  /* Figma: "Tiêu chuẩn cộng đồng" toolbar link text fill (mms_C, node
+     3053:11621), not bound to a named Figma variable in the source file */
+  --details-community-link: #e46060;
 }
 
 @theme inline {
@@ -36,6 +60,13 @@
   --color-details-border: var(--details-border);
   --color-details-dropdown-list-selected: var(--details-dropdown-list-selected);
   --color-details-header-overlay: var(--details-header-overlay);
+  --color-details-text-secondary-2: var(--details-text-secondary-2);
+  --color-details-error: var(--details-error);
+  --color-details-modal-background: var(--details-modal-background);
+  --color-details-textbutton-normal: var(--details-textbutton-normal);
+  --color-details-required-mark: var(--details-required-mark);
+  --color-details-remove-button: var(--details-remove-button);
+  --color-details-community-link: var(--details-community-link);
 
   --font-montserrat: var(--font-montserrat);
   --font-montserrat-alternates: var(--font-montserrat-alternates);
