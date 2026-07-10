@@ -1,0 +1,29 @@
+{
+  "score": 8,
+  "criticalCount": 0,
+  "decision": "SEALED",
+  "acceptanceCovered": [
+    "Opening the modal while unauthenticated redirects to login; while authenticated, the modal opens. — verified by reading lib/supabase/middleware.ts's existing matcher (unchanged) and confirming /kudos falls under its non-login/non-auth redirect branch.",
+    "Submit is disabled while recipient is empty; selecting a recipient from the autocomplete dropdown populates the field and clears the error. — verified via use-kudos-form.test.ts canSubmit derivation (recipient null -> false) and code trace of RecipientField's onSelect/onChange wiring.",
+    "Submit is disabled while content is empty. — verified via use-kudos-form.test.ts canSubmit derivation (isContentEmpty true -> false).",
+    "Cancel discards all composed data and closes the modal immediately, no confirmation. — verified by code trace: KudosModal's Cancel handler calls dialog.close() with no confirm step; the close-event listener resets useKudosForm state.",
+    "With recipient, content, and >=1 hashtag valid, Submit is enabled; submitting shows a loading state and closes the modal on success. — verified via use-kudos-form.test.ts canSubmit true-path tests and code trace of the submit handler's submitting/loading state and reset()+onClose() on success.",
+    "The dropdown lists hashtags sourced dynamically from the database; clicking a row toggles selection; selected hashtags render as removable chips. — verified end-to-end against a live local Supabase instance: listHashtags() query pattern confirmed to return the 8 seeded rows once the round-1 GRANT fix was applied.",
+    "Selecting a 6th hashtag is blocked; at 5 selected, unselected rows become non-clickable; submitting with 0 hashtags is blocked. — verified both client-side (HashtagPicker's per-row disabled computation, code-traced) and server-side (create_kudos RPC rejects 0 and 6 hashtag_ids, confirmed live against local Postgres with rollback verified).",
+    "Selecting a valid .jpg/.png file under 5MB adds a thumbnail with a remove control; invalid type or oversized file is rejected with a visible error; after 5 images the add-image control hides. — verified via isValidKudosImage code trace and its boundary condition (exactly 5MB accepted per <= operator, confirmed by round-1 tester's unit test).",
+    "The anonymous toggle defaults off; turning it on reveals a free-text display-name field; on submit with it on, the resulting kudos row does not persist the real sender's identity anywhere. — verified live against local Postgres: kudos_anonymous_sender_check CHECK constraint rejects any row where is_anonymous=true and sender_id is not null; create_kudos RPC forces sender_id=NULL whenever p_is_anonymous=true regardless of auth.uid(); happy-path anonymous insert confirmed sender_id NULL in the resulting row.",
+    "The formatting toolbar (Bold/Italic/Strikethrough/Numbered-list/Link/Quote) applies to the current selection; typing \"@\" opens a mention suggestion list and inserts the mention inline. — verified by code trace: kudos-editor.tsx wires each toolbar action to the corresponding Tiptap chain command, and mention-suggestion.tsx's createMentionExtension is wired into the editor's extensions array with a working ReactRenderer-based suggestion popup."
+  ],
+  "regressionChecked": [
+    "Existing login/auth flow (app/login/page.tsx, components/auth/*, lib/supabase/middleware.ts) — confirmed unmodified by this feature; /kudos relies on the same unmodified middleware matcher.",
+    "Existing next/image usage (google-login-button.tsx, header.tsx, footer.tsx — all local /public assets) — confirmed the new images.remotePatterns addition in next.config.ts only adds a Google-avatar allowlist and does not affect or restrict any existing local-asset next/image usage.",
+    "Existing i18n structure (messages/en.json, vi.json Header/Footer/LoginPage namespaces) — confirmed untouched; only new KudosModal/KudosPage namespaces were added, JSON validity of both files confirmed.",
+    "Existing build/lint/dev scripts (package.json) — confirmed npm run build, npx eslint, and npx tsc --noEmit all still succeed project-wide (feature-scoped) after adding Tiptap and Vitest as new dependencies.",
+    "Vitest test discovery does not swallow unrelated files — round-1 defect found and fixed (was picking up .claude/hooks/lib/__tests__/*.test.cjs); confirmed round-2 that npm test now runs exactly 2 files / 31 tests, zero unrelated failures.",
+    "No direct client write path exists to kudos/kudos_hashtags/kudos_images/kudos_mentions outside the create_kudos SECURITY DEFINER RPC — confirmed via repo-wide grep and by confirming no INSERT/UPDATE/DELETE RLS policy exists on any of these tables in the migrations."
+  ],
+  "contractStatus": "OK",
+  "refuted": [],
+  "unproven": [],
+  "reachableRegressions": []
+}

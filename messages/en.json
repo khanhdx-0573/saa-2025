@@ -9,5 +9,63 @@
     "headlineLine1": "Start your journey with SAA 2025.",
     "headlineLine2": "Log in to explore!",
     "googleButton": "LOGIN With Google"
+  },
+  "KudosPage": {
+    "writeKudoButton": "Write Kudo"
+  },
+  "KudosModal": {
+    "noHashtagsAvailable": "No hashtags available",
+    "title": "Send thanks and recognition to a teammate",
+    "recipientLabel": "Recipient",
+    "recipientPlaceholder": "Search",
+    "recipientNoResults": "No matching Sunners found",
+    "unknownUser": "Unknown user",
+    "titleLabel": "Title",
+    "titlePlaceholder": "Give your teammate a title",
+    "titleHelper": "e.g. \"The one who keeps me motivated.\"\nThe title will be shown as your Kudos headline.",
+    "contentPlaceholder": "Write your thank-you note to a teammate here!",
+    "contentHelper": "You can type \"@ + name\" to mention another colleague",
+    "contentCounter": "{count}/1,000",
+    "toolbar": {
+      "bold": "Bold",
+      "italic": "Italic",
+      "strike": "Strikethrough",
+      "orderedList": "Numbered list",
+      "link": "Link",
+      "quote": "Quote"
+    },
+    "communityStandards": "Community Standards",
+    "linkDialog": {
+      "title": "Add link",
+      "textLabel": "Text",
+      "textPlaceholder": "Enter display text",
+      "textRequiredError": "Display text must be 1-100 characters",
+      "linkLabel": "Link",
+      "placeholder": "https://example.com",
+      "linkInvalidError": "Invalid link",
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+    "mention": {
+      "noResults": "No matches found"
+    },
+    "hashtagLabel": "Hashtag",
+    "addHashtagButton": "Hashtag",
+    "hashtagMaxHint": "Max 5",
+    "hashtagMaxReached": "Max 5 hashtags",
+    "hashtagRemoveAlt": "Remove hashtag",
+    "imageLabel": "Image",
+    "addImageButton": "Image",
+    "imageMaxHint": "Max 5",
+    "imageInvalidError": "Invalid file (only .jpg/.png, up to 5MB)",
+    "imageRemoveAlt": "Remove image",
+    "anonymousLabel": "Send this note and recognition anonymously",
+    "anonymousNameLabel": "Anonymous nickname",
+    "anonymousNamePlaceholder": "Anonymous display name",
+    "cancelButton": "Cancel",
+    "submitButton": "Send",
+    "submitLoading": "Sending...",
+    "submitErrorFallback": "Failed to send kudos. Please try again.",
+    "submitValidationError": "You need to fill in Recipient, Title, Message, and Hashtag to send Kudos!"
   }
 }

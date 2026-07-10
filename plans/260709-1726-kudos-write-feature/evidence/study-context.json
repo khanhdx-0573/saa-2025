@@ -1,0 +1,63 @@
+{
+  "task": "Implement Send Kudos (Viết Kudo): authenticated user composes and submits a peer-recognition thank-you note to one recipient, with rich-text content + @mention, 1-5 hashtags from a managed list, 0-5 images, and optional full anonymity.",
+  "mode": "code",
+  "acceptanceCriteria": [
+    "Opening the modal while unauthenticated redirects to login; while authenticated, the modal opens.",
+    "Submit is disabled while recipient is empty; selecting a recipient from the autocomplete dropdown populates the field and clears the error.",
+    "Submit is disabled while content is empty.",
+    "Cancel discards all composed data and closes the modal immediately, no confirmation.",
+    "With recipient, content, and >=1 hashtag valid, Submit is enabled; submitting shows a loading state and closes the modal on success.",
+    "The dropdown lists hashtags sourced dynamically from the database; clicking a row toggles selection; selected hashtags render as removable chips.",
+    "Selecting a 6th hashtag is blocked; at 5 selected, unselected rows become non-clickable; submitting with 0 hashtags is blocked.",
+    "Selecting a valid .jpg/.png file under 5MB adds a thumbnail with a remove control; invalid type or oversized file is rejected with a visible error; after 5 images the add-image control hides.",
+    "The anonymous toggle defaults off; turning it on reveals a free-text display-name field; on submit with it on, the resulting kudos row does not persist the real sender's identity anywhere.",
+    "The formatting toolbar (Bold/Italic/Strikethrough/Numbered-list/Link/Quote) applies to the current selection; typing \"@\" opens a mention suggestion list and inserts the mention inline."
+  ],
+  "touchpoints": [
+    "supabase/migrations/20260709120842_profiles.sql",
+    "supabase/migrations/20260709120843_hashtags.sql",
+    "supabase/migrations/20260709120844_kudos.sql",
+    "supabase/migrations/20260709120845_kudos_rpc.sql",
+    "supabase/migrations/20260709120846_storage_kudos_images.sql",
+    "lib/kudos/types.ts",
+    "lib/kudos/validation.ts",
+    "lib/kudos/queries.ts",
+    "lib/kudos/mutations.ts",
+    "lib/kudos/use-kudos-form.ts",
+    "lib/kudos/validation.test.ts",
+    "lib/kudos/use-kudos-form.test.ts",
+    "components/kudos/hashtag-picker.tsx",
+    "components/kudos/hashtag-picker-row.tsx",
+    "components/kudos/recipient-field.tsx",
+    "components/kudos/mention-suggestion.tsx",
+    "components/kudos/kudos-editor.tsx",
+    "components/kudos/kudos-editor-link-input.tsx",
+    "components/kudos/hashtag-field.tsx",
+    "components/kudos/image-field.tsx",
+    "components/kudos/anonymous-toggle.tsx",
+    "components/kudos/kudos-modal.tsx",
+    "components/kudos/kudos-page-client.tsx",
+    "app/kudos/page.tsx",
+    "app/globals.css",
+    "next.config.ts",
+    "vitest.config.ts",
+    "messages/en.json",
+    "messages/vi.json",
+    "package.json"
+  ],
+  "blastRadius": [
+    "New Supabase schema (profiles/hashtags/kudos+children) and the auth.users trigger — must not affect existing login/auth flow",
+    "next.config.ts images.remotePatterns — must not affect any existing next/image usage (login page, header, footer)",
+    "vitest.config.ts test discovery scope — must not swallow or skip unrelated existing test files",
+    "app/globals.css new design tokens — must not collide with or override existing --details-* tokens used by login/header/footer",
+    "messages/en.json and vi.json — must remain valid JSON and not disturb existing Header/Footer/LoginPage namespaces",
+    "package.json new dependencies (Tiptap x4, Vitest x3) — must not break the existing build/dev/lint scripts"
+  ],
+  "contracts": [
+    "public.create_kudos(p_recipient_id uuid, p_content text, p_is_anonymous boolean, p_anonymous_display_name text, p_hashtag_ids bigint[], p_image_paths text[], p_mentioned_profile_ids uuid[]) returns uuid",
+    "lib/kudos/queries.ts: searchProfiles(query: string): Promise<Profile[]>, listHashtags(): Promise<Hashtag[]>",
+    "lib/kudos/mutations.ts: uploadKudosImages(files: File[]): Promise<string[]>, createKudos(input: CreateKudosInput): Promise<string>",
+    "components/kudos/kudos-modal.tsx: <KudosModal open: boolean, onClose: () => void>",
+    "GET /kudos route (auth-gated by existing lib/supabase/middleware.ts, unmodified)"
+  ]
+}

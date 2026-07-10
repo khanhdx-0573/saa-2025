@@ -1,0 +1,32 @@
+{
+  "commands": [
+    {
+      "command": "npm run test",
+      "exitCode": 0,
+      "status": "pass",
+      "summary": "Test Files 3 passed (3); Tests 51 passed (51)",
+      "ts": "2026-07-10T17:11:01Z"
+    },
+    {
+      "command": "npm run test:e2e",
+      "exitCode": 0,
+      "status": "pass",
+      "summary": "4 passed (19.7s) — kudos.spec.ts + login.spec.ts, re-run after fixing the OAuth-abort issue",
+      "ts": "2026-07-10T17:18:30Z"
+    },
+    {
+      "command": "npx eslint components/auth/google-login-button.test.tsx e2e/login.spec.ts vitest.config.ts",
+      "exitCode": 0,
+      "status": "pass",
+      "summary": "no lint errors",
+      "ts": "2026-07-10T17:13:00Z"
+    },
+    {
+      "command": "npx tsc --noEmit",
+      "exitCode": 0,
+      "status": "pass",
+      "summary": "no type errors",
+      "ts": "2026-07-10T17:13:05Z"
+    }
+  ]
+}

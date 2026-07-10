@@ -30,9 +30,15 @@ export default async function RootLayout({
   const locale = await getLocale();
 
   const supabase = await createClient();
-  const { data } = await supabase.auth.getClaims();
-  const initialUser: AuthUser = data?.claims
-    ? { id: data.claims.sub, email: (data.claims.email as string | undefined) ?? null }
+  // getClaims() throws (rather than returning an `error`) when the browser's
+  // refresh token cookie is stale/revoked — treat that the same as "no
+  // session" instead of letting it crash the render.
+  const claims = await supabase.auth.getClaims().then(
+    ({ data }) => data?.claims,
+    () => undefined
+  );
+  const initialUser: AuthUser = claims
+    ? { id: claims.sub, email: (claims.email as string | undefined) ?? null }
     : null;
 
   return (
