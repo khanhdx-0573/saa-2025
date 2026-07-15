@@ -15,10 +15,10 @@ export function ComposeEntryBar() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="flex w-full items-center gap-4 rounded-full border border-details-border bg-details-textbutton-normal px-4 py-6 text-left"
+        className="flex w-full items-center gap-3 rounded-full border border-details-border bg-details-textbutton-normal px-3 py-4 text-left sm:gap-4 sm:px-4 sm:py-6"
       >
         <PenIcon className="shrink-0 text-details-text-secondary-1" />
-        <span className="font-montserrat text-base font-bold leading-6 tracking-[0.15px] text-details-text-secondary-1">
+        <span className="font-montserrat text-sm font-bold leading-5 tracking-[0.15px] text-details-text-secondary-1 sm:text-base sm:leading-6">
           {t("entryBar.placeholder")}
         </span>
       </button>

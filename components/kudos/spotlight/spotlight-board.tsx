@@ -117,7 +117,7 @@ export function SpotlightBoard({ data, loading = false, onOpenDetail }: Spotligh
       <div className="flex w-full flex-col gap-4">
         <h2 className="font-montserrat text-2xl font-bold text-details-text-secondary-1">{t("sectionEyebrow")}</h2>
         <div className="h-px w-full bg-details-divider" />
-        <h3 className="font-montserrat text-[57px] font-bold leading-[64px] tracking-[-0.25px] text-details-text-primary-1">
+        <h3 className="font-montserrat text-3xl font-bold text-details-text-primary-1 lg:text-[57px] lg:leading-[64px] lg:tracking-[-0.25px]">
           {t("spotlight.heading")}
         </h3>
       </div>
@@ -127,7 +127,7 @@ export function SpotlightBoard({ data, loading = false, onOpenDetail }: Spotligh
         className={
           expanded
             ? "fixed inset-0 z-50 h-screen w-screen overflow-hidden bg-details-background"
-            : "relative h-[548px] w-full overflow-hidden rounded-[47px] border border-details-border bg-details-background"
+            : "relative h-[300px] w-full overflow-hidden rounded-2xl border border-details-border bg-details-background sm:h-[400px] sm:rounded-3xl lg:h-[548px] lg:rounded-[47px]"
         }
       >
         {/* fix-bug: swapped which layer is the BASE. The network overlay's
@@ -155,7 +155,7 @@ export function SpotlightBoard({ data, loading = false, onOpenDetail }: Spotligh
            the search input, even though it rendered underneath visually
            (nothing painted over it). Bumping these above the canvas is what
            actually makes the input focusable/clickable again. */}
-        <div className="absolute left-6 top-6 z-20 flex h-[39px] items-center gap-2 rounded-full border border-details-border bg-details-textbutton-normal px-4">
+        <div className="absolute left-3 top-3 z-20 flex h-9 items-center gap-2 rounded-full border border-details-border bg-details-textbutton-normal px-3 sm:left-6 sm:top-6 sm:h-[39px] sm:px-4">
           <SearchIcon />
           <input
             type="text"
@@ -164,10 +164,10 @@ export function SpotlightBoard({ data, loading = false, onOpenDetail }: Spotligh
             maxLength={SPOTLIGHT_SEARCH_MAX_CHARS}
             placeholder={t("spotlight.searchPlaceholder")}
             aria-label={t("spotlight.searchAriaLabel")}
-            className="w-40 bg-transparent font-montserrat text-sm text-details-text-secondary-1 placeholder:text-details-text-secondary-2 focus:outline-none"
+            className="w-24 bg-transparent font-montserrat text-sm text-details-text-secondary-1 placeholder:text-details-text-secondary-2 focus:outline-none sm:w-40"
           />
         </div>
-        <p className="absolute left-1/2 top-6 z-20 -translate-x-1/2 font-montserrat text-[36px] font-bold leading-[44px] text-details-text-secondary-1">
+        <p className="absolute left-1/2 top-4 z-20 -translate-x-1/2 font-montserrat text-xl font-bold leading-tight text-details-text-secondary-1 sm:top-6 sm:text-2xl lg:text-[36px] lg:leading-[44px]">
           {t("spotlight.totalLabel", { count: data.totalKudos })}
         </p>
 

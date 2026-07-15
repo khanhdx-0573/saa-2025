@@ -142,11 +142,11 @@ export function KudosEditModal({ kudosId, onClose, onSaved }: KudosEditModalProp
          editable too) is taller than the viewport — `m-auto` alone collapses
          to a flush 0px gap once there's no leftover space left to center
          into, which read as the modal "overflowing" the screen edges. */}
-      <div className="flex min-h-full py-2.5">
+      <div className="flex min-h-full py-2.5 px-3 sm:px-0">
         {/* fix-bug: shrunk to match `kudos-modal.tsx`'s shell (same
            overflow complaint applies to both). */}
-        <div className="m-auto flex w-[680px] max-w-full flex-col gap-5 rounded-3xl bg-details-modal-background p-7">
-          <h2 className="text-center font-montserrat text-[26px] font-bold text-details-text-primary-2">{t("title")}</h2>
+        <div className="m-auto flex w-[680px] max-w-full flex-col gap-4 rounded-2xl bg-details-modal-background p-4 sm:gap-5 sm:rounded-3xl sm:p-7">
+          <h2 className="text-center font-montserrat text-xl font-bold text-details-text-primary-2 sm:text-[26px]">{t("title")}</h2>
 
           {loading && (
             <p className="py-10 text-center font-montserrat text-sm text-details-text-primary-2">{t("loading")}</p>
@@ -188,11 +188,11 @@ export function KudosEditModal({ kudosId, onClose, onSaved }: KudosEditModalProp
                   {validationMessage ?? submitError}
                 </p>
               )}
-              <div className="flex justify-start gap-4">
+              <div className="flex justify-start gap-3 sm:gap-4">
                 <button
                   type="button"
                   onClick={() => dialogRef.current?.close()}
-                  className="flex shrink-0 items-center gap-2 rounded border border-details-border bg-details-textbutton-normal px-6 py-3 font-montserrat text-sm font-bold text-details-text-primary-2"
+                  className="flex shrink-0 items-center gap-2 rounded border border-details-border bg-details-textbutton-normal px-4 py-2.5 font-montserrat text-xs font-bold text-details-text-primary-2 sm:px-6 sm:py-3 sm:text-sm"
                 >
                   {t("cancelButton")}
                   <CloseIcon />
@@ -201,7 +201,7 @@ export function KudosEditModal({ kudosId, onClose, onSaved }: KudosEditModalProp
                   type="button"
                   disabled={submitting}
                   onClick={handleSubmit}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-details-text-primary-1 px-4 py-3 font-montserrat text-lg font-bold text-details-text-primary-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-details-text-primary-1 px-4 py-2.5 font-montserrat text-base font-bold text-details-text-primary-2 disabled:cursor-not-allowed disabled:opacity-50 sm:py-3 sm:text-lg"
                 >
                   {submitting ? t("saveLoading") : t("saveButton")}
                   {!submitting && <SendIcon />}

@@ -33,7 +33,7 @@ export function KudosCardParty({ profile, isAnonymous, anonymousDisplayName, onO
 
   if (isAnonymous) {
     return (
-      <div className="flex w-[235px] flex-col items-center gap-3 text-center">
+      <div className="flex w-full flex-col items-center gap-3 text-center lg:w-[235px]">
         <span className="flex size-16 shrink-0 items-center justify-center rounded-full border-2 border-details-text-secondary-1 bg-details-background text-details-text-secondary-1">
           <IncognitoIcon />
         </span>
@@ -52,7 +52,7 @@ export function KudosCardParty({ profile, isAnonymous, anonymousDisplayName, onO
   if (!profile) return null;
 
   return (
-    <div className="flex w-[235px] flex-col items-center gap-3 text-center">
+    <div className="flex w-full flex-col items-center gap-3 text-center lg:w-[235px]">
       <button
         type="button"
         onClick={() => onOpenProfile?.(profile.id)}

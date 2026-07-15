@@ -50,9 +50,9 @@ export function SunnerSearchBar() {
   }
 
   return (
-    <div className="relative w-full max-w-[420px]">
-      <div className="flex h-[72px] w-full items-center gap-4 rounded-full border border-details-border bg-details-textbutton-normal px-6">
-        <SearchIcon size={24} />
+    <div className="relative w-full sm:max-w-[420px]">
+      <div className="flex h-14 w-full items-center gap-3 rounded-full border border-details-border bg-details-textbutton-normal px-4 sm:h-[72px] sm:gap-4 sm:px-6">
+        <SearchIcon size={20} />
         <input
           type="text"
           role="combobox"
@@ -67,7 +67,7 @@ export function SunnerSearchBar() {
           onFocus={() => setIsOpen(true)}
           onBlur={() => setTimeout(() => setIsOpen(false), 100)}
           placeholder={t("sunnerSearch.placeholder")}
-          className="w-full bg-transparent font-montserrat text-base font-bold text-details-text-secondary-1 placeholder:font-bold placeholder:text-details-text-secondary-1 focus:outline-none"
+          className="w-full bg-transparent font-montserrat text-sm font-bold text-details-text-secondary-1 placeholder:font-bold placeholder:text-details-text-secondary-1 focus:outline-none sm:text-base"
         />
       </div>
       {isOpen && results.length > 0 && (

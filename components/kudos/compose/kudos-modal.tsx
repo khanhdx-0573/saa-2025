@@ -90,6 +90,8 @@ export function KudosModal({ open, onClose }: KudosModalProps) {
       const mentionedProfileIds = editorRef.current?.getMentionedIds() ?? [];
       await createKudos(form.toCreateKudosInput(imagePaths, mentionedProfileIds));
       dialogRef.current?.close();
+      // Notify the feed to refetch so the new kudos appears immediately.
+      window.dispatchEvent(new CustomEvent("kudos:created"));
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : t("submitErrorFallback"));
     } finally {
@@ -106,13 +108,13 @@ export function KudosModal({ open, onClose }: KudosModalProps) {
          when the form is taller than the viewport — `m-auto` alone collapses
          to a flush 0px gap once there's no leftover space left to center
          into, which read as the modal "overflowing" the screen edges. */}
-      <div className="flex min-h-full py-2.5">
+      <div className="flex min-h-full py-2.5 px-3 sm:px-0">
         {/* fix-bug: shrunk the whole shell (width/padding/gaps/font sizes)
            — the form was running noticeably taller than the viewport on
            typical screens. Proportions/hierarchy stay the same, just at a
            smaller scale. */}
-        <div className="m-auto flex w-[680px] max-w-full flex-col gap-5 rounded-3xl bg-details-modal-background p-7">
-          <h2 className="whitespace-pre-line text-center font-montserrat text-[26px] font-bold leading-9 text-details-text-primary-2">
+        <div className="m-auto flex w-[680px] max-w-full flex-col gap-4 rounded-2xl bg-details-modal-background p-4 sm:gap-5 sm:rounded-3xl sm:p-7">
+          <h2 className="whitespace-pre-line text-center font-montserrat text-xl font-bold leading-7 text-details-text-primary-2 sm:text-[26px] sm:leading-9">
             {t("title")}
           </h2>
           <RecipientField value={form.recipient} onChange={form.setRecipient} excludeUserId={user?.id} />
@@ -140,11 +142,11 @@ export function KudosModal({ open, onClose }: KudosModalProps) {
               {validationMessage ?? submitError}
             </p>
           )}
-          <div className="flex justify-start gap-4">
+          <div className="flex justify-start gap-3 sm:gap-4">
             <button
               type="button"
               onClick={() => dialogRef.current?.close()}
-              className="flex shrink-0 items-center gap-2 rounded border border-details-border bg-details-textbutton-normal px-6 py-3 font-montserrat text-sm font-bold text-details-text-primary-2"
+              className="flex shrink-0 items-center gap-2 rounded border border-details-border bg-details-textbutton-normal px-4 py-2.5 font-montserrat text-xs font-bold text-details-text-primary-2 sm:px-6 sm:py-3 sm:text-sm"
             >
               {t("cancelButton")}
               <CloseIcon />
@@ -153,7 +155,7 @@ export function KudosModal({ open, onClose }: KudosModalProps) {
               type="button"
               disabled={submitting}
               onClick={handleSubmit}
-              className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-details-text-primary-1 px-4 py-3 font-montserrat text-lg font-bold text-details-text-primary-2 disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-details-text-primary-1 px-4 py-2.5 font-montserrat text-base font-bold text-details-text-primary-2 disabled:cursor-not-allowed disabled:opacity-50 sm:py-3 sm:text-lg"
             >
               {submitting ? t("submitLoading") : t("submitButton")}
               {!submitting && <SendIcon />}

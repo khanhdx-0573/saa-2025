@@ -147,6 +147,17 @@ export function useKudosFeed({
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentionally keyed on primitive filter fields, not `loadPage`'s identity, to avoid re-fetching on every unrelated re-render
   }, [filters.hashtagId, filters.department, fetchPage]);
 
+  // Refetch from page 1 when a new kudos is created (KudosModal dispatches
+  // this event after a successful `createKudos`). Small delay lets the DB
+  // commit before we read, avoiding a stale-read race.
+  useEffect(() => {
+    function handleCreated() {
+      setTimeout(() => loadPage(0, "reset"), 100);
+    }
+    window.addEventListener("kudos:created", handleCreated);
+    return () => window.removeEventListener("kudos:created", handleCreated);
+  }, [loadPage]);
+
   const loadMore = useCallback(() => {
     if (loading || !hasMore) return;
     loadPage(offset, "append");
