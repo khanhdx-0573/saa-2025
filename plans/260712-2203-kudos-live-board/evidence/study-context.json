@@ -1,0 +1,41 @@
+{
+  "task": "Implement the Sun* Kudos Live Board (F002): banner + compose entry, Highlight carousel, Spotlight word-cloud board, infinite-scroll All Kudos feed, likes/hearts, sidebar stats, Sunner profile page, kudos detail page.",
+  "mode": "code",
+  "acceptanceCriteria": [
+    "SC-01: Like increments the card heart count by 1 and marks active; unlike reverses; both persist across reload",
+    "SC-02: A user's own kudos heart button is disabled/no-op; the toggle RPC rejects self-likes",
+    "SC-03: Highlight always shows at most 5 highest-hearted kudos; order updates after like changes",
+    "SC-04: A filter change updates both sections and resets All-Kudos to page 1",
+    "SC-05: Copy Link places the correct /kudos/{id} URL on the clipboard and a toast appears",
+    "SC-06: Infinite scroll loads further pages with no duplicated or skipped cards",
+    "SC-07: Spotlight node sizes correlate with received counts; clicking a node opens the correct detail",
+    "SC-08: Sidebar received/sent/hearts equal the DB counts for the current user",
+    "SC-09: Star badge count matches the 10/20/50 thresholds",
+    "SC-10: Anonymous card hides the sender identity, like works, and no user's hearts received changes",
+    "SC-11: Profile and Detail pages render real data read-only and return 404 on a missing id",
+    "SC-12: After integration, all board strings resolve through en/vi catalogs; no hardcoded JSX copy"
+  ],
+  "touchpoints": [
+    "supabase/migrations/20260712000001_kudos_likes.sql",
+    "supabase/migrations/20260712000002_kudos_read_rpcs.sql",
+    "lib/kudos/{types,queries,mutations,validation,queries-mappers}.ts",
+    "lib/profile/types.ts",
+    "components/ui/toast.tsx",
+    "components/kudos/*.tsx (card family, highlight, spotlight, all-kudos feed, sidebar, banner, compose entry)",
+    "components/profile/*.tsx",
+    "app/kudos/page.tsx",
+    "app/kudos/[id]/page.tsx",
+    "app/profile/[id]/page.tsx",
+    "messages/en.json, messages/vi.json (KudosLiveBoard namespace)",
+    "e2e/kudos-live-board.spec.ts (new), e2e/kudos.spec.ts (selector fixes only)"
+  ],
+  "blastRadius": [
+    "Existing F001 Send Kudos flow (KudosModal reused unmodified; compose trigger visual changed from button to pill, which changed its accessible name)",
+    "app/layout.tsx (ToastProvider mount)",
+    "profiles.department / hashtags tables (read-only, existing F001 schema, unaffected)"
+  ],
+  "contracts": [
+    "toggle_kudos_like(p_kudos_id uuid) returns jsonb {liked, heart_count} — SECURITY DEFINER, rejects self-like server-side",
+    "get_kudos_feed/get_highlight_kudos/get_spotlight_nodes/get_kudos_detail/get_kudos_stats — SQL STABLE RPCs, jsonb card/stats contract frozen in docs/features/F002_KudosLiveBoard/technical-spec.md"
+  ]
+}

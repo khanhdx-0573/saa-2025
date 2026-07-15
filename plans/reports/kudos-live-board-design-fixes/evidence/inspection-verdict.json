@@ -1,0 +1,25 @@
+{
+  "score": 9,
+  "criticalCount": 0,
+  "decision": "SEALED",
+  "acceptanceCovered": [
+    "Sunner search box ('Tim kiem profile Sunner') is present and visible next to the compose entry bar",
+    "Kudos card content renders as real HTML (no literal <p> or </p> substrings visible in rendered text)",
+    "Highlight carousel peek cards are proportionally scaled from the active card, not reflow-drifted to a different natural height",
+    "Page body background is the fixed dark theme (#00101a), not dependent on prefers-color-scheme",
+    "Banner container height matches its background asset's natural aspect ratio (1440x512) instead of collapsing to ~158px",
+    "Spotlight board canvas has a decorative background image instead of a bare solid color"
+  ],
+  "regressionChecked": [
+    "Sanitizer XSS surface: ran 11 empirical jsdom probes (script tags, onerror/onclick/style attrs, javascript:/tab-obfuscated-javascript:/data: hrefs, foreign <svg onload>) against sanitizeKudosContentHtml via a throwaway vitest file (deleted after run) — all blocked, all pass",
+    "Sanitizer allowlist vs. toolbar/mention completeness: cross-checked kudos-editor-toolbar.tsx (bold/italic/strike/orderedList/quote/link) and mention-suggestion.tsx (span.kudos-mention) against ALLOWED_TAGS — full parity; only gap is H1-H6/HR (StarterKit markdown-shortcut-reachable, no toolbar button) which get unwrapped (text kept, styling lost) — cosmetic, not security",
+    "Carousel fixed w-[640px] restructure: walked the flex-centering math for the actual 1280px Playwright default viewport and HighlightCarousel's own unpadded max-w-[1440px] wrapper — active card stays fully visible (needs available width >= 640px, well within page's own supported range); confirmed pointer-events-none + aria-hidden preserved on both peek wrappers",
+    "globals.css hardcode blast radius: grepped app/login, components/layout/* for any light-mode/white-background assumption — none found, every component already used --details-* dark tokens unconditionally",
+    "e2e selector-scope fixes: traced each collision to a real, distinct new element (ComposeEntryBar's own 'gui...' substring, SunnerSearchBar's role=combobox, KudosFilters' 'Hashtag' button) rather than an accidental duplicate accessible name — legitimate scope fixes, not masked a11y regressions",
+    "RPC read paths in lib/kudos/queries.ts (get_highlight_kudos/get_kudos_feed/get_spotlight_nodes/etc.): all parameterized via supabase.rpc(), no string concatenation"
+  ],
+  "contractStatus": "OK",
+  "refuted": [],
+  "unproven": [],
+  "reachableRegressions": []
+}

@@ -1,8 +1,10 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Fixed dark theme app-wide — hardcoded rather than `prefers-color-scheme`,
+     which let a light-mode OS bleed the white body background through gaps. */
+  --background: #00101a;
+  --foreground: #ffffff;
 
   /* Figma: details/background, details/text-primary-1, details/text-primary-2,
      details/text-secondary-1, details/divider */
@@ -20,36 +22,33 @@
   /* Figma: mms_A_Header background */
   --details-header-overlay: rgba(11, 15, 18, 0.8);
 
-  /* Figma: Details-Text-Secondary-2, Details-Error (Write Kudo modal, ihQ26W78P2;
-     re-confirmed against the "Lỗi chưa điền đủ thông tin" error screen, 662:13035) */
+  /* Figma: Details-Text-Secondary-2, Details-Error (Write Kudo modal, ihQ26W78P2) */
   --details-text-secondary-2: #999999;
   --details-error: #d4271d;
 
-  /* Figma: Details-PrimaryButton-Hover — used as the Write Kudo modal's own
-     background (not a hover state in this context) */
+  /* Figma: Details-PrimaryButton-Hover — reused as the Write Kudo modal background, not a hover state here. */
   --details-modal-background: #fff8e1;
 
-  /* Figma: Details-TextButton-Normal / Details-SecondaryButton-Normal —
-     translucent yellow fills for the editor toolbar buttons and Cancel button */
+  /* Figma: Details-TextButton-Normal / Details-SecondaryButton-Normal (editor toolbar + Cancel fills) */
   --details-textbutton-normal: rgba(255, 234, 158, 0.1);
 
-  /* Figma: asterisk fill on required-field labels (mms_B.1/E.1), not bound to
-     a named Figma variable in the source file */
+  /* Figma: required-field asterisk fill (mms_B.1/E.1), no named variable in source. */
   --details-required-mark: #cf1322;
 
-  /* Figma: remove ("x") button fill on image thumbnails (mms_F.2 Close Tiny) */
+  /* Figma: image-thumbnail remove ("x") button fill (mms_F.2 Close Tiny) */
   --details-remove-button: #d4271d;
 
-  /* Figma: "Tiêu chuẩn cộng đồng" toolbar link text fill (mms_C, node
-     3053:11621), not bound to a named Figma variable in the source file */
+  /* Figma: "Tiêu chuẩn cộng đồng" toolbar link text fill (mms_C, 3053:11621), no named variable in source. */
   --details-community-link: #e46060;
+
+  /* Figma: Spotlight highest-received-count label fill (mms_B.7, 2940:14198), no named
+     variable — distinct from the white/gold label tokens, so it needs its own. */
+  --details-spotlight-highlight: #f17676;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 
   --color-details-background: var(--details-background);
   --color-details-text-primary-1: var(--details-text-primary-1);
@@ -67,20 +66,57 @@
   --color-details-required-mark: var(--details-required-mark);
   --color-details-remove-button: var(--details-remove-button);
   --color-details-community-link: var(--details-community-link);
+  --color-details-spotlight-highlight: var(--details-spotlight-highlight);
 
   --font-montserrat: var(--font-montserrat);
   --font-montserrat-alternates: var(--font-montserrat-alternates);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Seamless drifting loop for the Spotlight names (`spotlight-node.tsx`): 0%/100% share
+   the same transform so there's no seam; transform-only to stay cheap on 100+ nodes. */
+@keyframes spotlight-float {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(1.5px, -2px);
+  }
+  50% {
+    transform: translate(-1px, -3px);
+  }
+  75% {
+    transform: translate(-2px, 1px);
+  }
+}
+
+.animate-spotlight-float {
+  animation: spotlight-float 6s ease-in-out infinite;
+}
+
+/* Thin scrollbar for small bounded lists — Tailwind v4 has no scrollbar utility and
+   this is the only widget needing one, so plain CSS beats a plugin. Figma: 2px, radius
+   8px, #999999 (= --details-text-secondary-2). */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--details-text-secondary-2) transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 2px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: var(--details-text-secondary-2);
+  border-radius: 8px;
 }

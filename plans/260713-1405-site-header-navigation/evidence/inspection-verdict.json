@@ -1,0 +1,31 @@
+{
+  "score": 9,
+  "criticalCount": 0,
+  "decision": "SEALED",
+  "acceptanceCovered": [
+    "FR-001: Nav tabs + bell + avatar render iff authenticated; render nothing when unauthenticated — verified: header.tsx's unauth branch (`if (!user) return ...`) renders none of them; header.test.tsx unauthenticated block asserts absence",
+    "FR-002: Active tab shows gold text + underline + aria-current='page'; inactive tabs white text — verified: NAV_ITEMS.map applies border-details-text-primary-1/text-details-text-primary-1 (gold+underline)+aria-current=\"page\" on match, border-transparent/text-details-text-secondary-1 (white) otherwise; header.test.tsx it.each matrix covers all 4 pathnames incl. /kudos/abc-123 nested route and /profile/[id] (no tab active)",
+    "FR-003: 'Sun* Kudos' nav tab → /kudos route — verified: navKudos href=\"/kudos\" in header.tsx + header.test.tsx assertion",
+    "FR-006: Bell is decorative, non-interactive (no button role, no tab stop, no aria-label) — verified: bell is a non-interactive <span>, no role, no tabindex, no href/onClick, aria-hidden on both icon and dot; header.tsx:79-84 and header.test.tsx 'renders the bell as non-interactive' test (checks tagName, role, tabindex, closest button/a)",
+    "FR-007: Avatar link navigates to signed-in user's OWN /profile/{id}, not another user's — verified: avatar Link href=`/profile/${user.id}` sourced from useAuth() session context (never user-supplied); header.tsx:107-113, header.test.tsx href assertion, and e2e 'avatar navigates to the signed-in user's own profile, not another user's' (derives expected id from the actual storageState auth cookie, not a hardcoded value)",
+    "FR-008: Language switcher persists and functional in both auth states — verified: <LanguageSwitcher/> untouched, rendered in both auth branches",
+    "FR-009: Unauthenticated /about-saa-2025 and /award-information redirect to /login — verified: no per-route auth code added to the two new pages; proxy.ts matcher is a blanket exclude-list (_next/static, _next/image, _next/webpack-hmr, favicon, image exts) with no allowlist that would exempt the new routes; middleware.ts redirects any non-/login,/auth route to /login when getClaimsSafely() returns undefined; e2e asserts both new routes redirect when unauthenticated",
+    "No regression: /login header unchanged (logo + language switcher only) — verified: diffed header.tsx unauth branch against `git show HEAD:components/layout/header.tsx` (pre-feature) — same className strings, same Image props (src/alt/width/height/className) and same LanguageSwitcher; only reformatted across multiple lines, rendered DOM is identical",
+    "All strings localized: en.json + vi.json both updated with nav labels — verified: `git diff HEAD~1 -- messages/en.json messages/vi.json` shows navAboutSaa/navAwardInfo/navKudos/avatarAriaLabel and AboutSaaPage/AwardInformationPage namespaces added to BOTH files with matching key sets"
+  ],
+  "regressionChecked": [
+    "login.spec.ts — grepped for any header/logo/language assertions; none exist, so the new nav markup cannot collide with it (belt-and-suspenders beyond the tester's 'all green' claim)",
+    "Hydration/SSR: app/layout.tsx computes initialUser server-side via supabase.auth.getClaims() (with getClaimsSafely fallback) and passes it into AuthProvider before any client render — header's useAuth() therefore starts with the correct value on first paint; no flash-of-unauth-content on protected pages, and usePathname() reflects the actual requested route from first render in the App Router, so no active-tab flicker either",
+    "proxy.ts matcher scope — confirmed generic exclude-pattern (not a route allowlist), so /about-saa-2025 and /award-information are covered by the auth gate automatically, matching FR-009's 'no per-route opt-in' claim rather than trusting the docstring",
+    "kudos/[id] route existence — confirmed app/kudos/[id]/page.tsx exists so the startsWith(\"/kudos/\") active-matcher branch is exercised against a real route, not a hypothetical one",
+    "data-testid=\"header-bell\" is a new pattern — grepped the whole components/, app/, and e2e/ trees for prior data-testid usage; none found. Not a defect (the span is legitimately unreachable via role/label queries by design), but it is precedent-setting — flagged as a low-priority suggestion (not a blocker) since no existing test convention is broken",
+    "Design tokens: every color class used (details-text-primary-1, details-text-secondary-1, details-border, details-error, details-header-overlay, details-background) resolves to a CSS var in app/globals.css — no hardcoded hex/px anywhere in the diff",
+    "Zero `any`: grepped header.tsx/header-icons.tsx/both pages/e2e spec — no `any` type usage",
+    "File size: header.tsx 115 lines, header-icons.tsx 50, header.test.tsx 111, site-navigation.spec.ts 117, both page.tsx 36 each — all comfortably under the 200-line rule",
+    "Tester evidence (temper-results.json) independently corroborated: tsc clean, eslint clean, 105/105 unit + 29/29 e2e incl. existing login/kudos specs unmodified and passing (no accessible-name collisions)"
+  ],
+  "contractStatus": "OK",
+  "refuted": [],
+  "unproven": [],
+  "reachableRegressions": []
+}
