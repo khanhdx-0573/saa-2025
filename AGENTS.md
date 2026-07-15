@@ -1,8 +1,3 @@
-# 🚨 CRITICAL: NEXT.JS VERSION ALERT
-This project uses a modern/custom version of Next.js with breaking changes. APIs, file structures, and conventions WILL differ from your pre-trained data.
-- **Mandatory:** Always read the relevant documentation in `node_modules/next/dist/docs/` before writing or modifying any Next.js-related code.
-- **Strict adherence:** Strictly follow deprecation notices found in the codebase or logs. Do not guess APIs.
-
 # 🏗️ Project Structure & Stack
 
 **Stack:** Next.js 16 (App Router, Turbopack) · TypeScript (strict) · Tailwind CSS v4 · Supabase (Postgres + Auth + Storage) · next-intl (i18n) · Tiptap (rich text editor, approved exception to the no-new-deps rule) · Vitest + Testing Library (unit) · Playwright (e2e).
@@ -28,12 +23,21 @@ components/
 ├─ <feature>/                   # one folder per feature — NEVER grouped by type
 │  ├─ <feature>-page-client.tsx    # top-level client shell (page entry / modal trigger+mount)
 │  ├─ <feature>-modal.tsx          # modal/page shell + submit flow, if the feature uses one
-│  ├─ <feature>-icons.tsx          # inline SVGs used only within this feature
+│  ├─ <feature>-icons.tsx          # inline SVGs used only within this feature — icon files stay
+│  │                               #   directly under <feature>/, even if the feature later splits
+│  │                               #   into sub-folders below, since they're shared across those subs
 │  ├─ <feature>-editor.tsx         # + <feature>-editor-toolbar.tsx, <feature>-editor-*-dialog.tsx
 │  │                               #   (only if the feature has a rich-text editor)
-│  └─ <field-name>.tsx             # one file per field/section — split before any file
-│     <field-name>.test.tsx        #   passes ~150-200 lines; co-locate its unit test
-├─ layout/                      # SHARED — header, footer
+│  ├─ <field-name>.tsx             # one file per field/section — split before any file
+│  │  <field-name>.test.tsx        #   passes ~150-200 lines; co-locate its unit test
+│  └─ <sub-concern>/               # once a feature outgrows ~20 flat files, group by SUB-CONCERN
+│     └─ ...                       #   (a cohesive slice of the feature's own UI, e.g. kudos/spotlight/
+│                                   #   for the word-cloud widget) — still never grouped by type
+│                                   #   (no components/ vs hooks/ split within a feature)
+├─ layout/                      # SHARED — one sub-folder per shared piece: header/ (header.tsx +
+│                                 #   header-icons.tsx + profile-dropdown.tsx — the dropdown lives
+│                                 #   here, not in a feature, since it's rendered by the header on
+│                                 #   every auth-gated page) and footer/ (footer.tsx)
 ├─ ui/                          # SHARED — small widgets not tied to one feature (e.g. language switcher)
 └─ auth/                        # SHARED — session context + sign-in button; consumed by the `login`
                                  #   screen AND by other features that need the current user (e.g.
@@ -75,8 +79,9 @@ e2e/
 ```
 
 Reference examples already built to this shape — read them before adding a new feature:
-- `kudos` — a full feature with all 4 layers under one name: `app/kudos/`, `components/kudos/`, `lib/kudos/`, `e2e/kudos.spec.ts`.
+- `kudos` — a full feature with all 4 layers under one name: `app/kudos/`, `components/kudos/`, `lib/kudos/`, `e2e/kudos.spec.ts`. `components/kudos/` outgrew a flat layout (60+ files) and now groups by sub-concern: `spotlight/` (Live Board word-cloud), `feed/` (card rendering + Highlight/All-Kudos sections), `board/` (page shell/sidebar), `compose/` (send/edit modal + rich-text editor) — with `kudos-icons.tsx` and `kudos-live-board-icons.tsx` staying directly under `components/kudos/` since both icon sets are shared across those sub-folders.
 - `login` — a feature with no `lib/login/` (its logic is thin enough to call `lib/supabase/client` directly, no queries/mutations/validation of its own): `app/login/` (screen) + `app/auth/*` (OAuth callback routes) + `e2e/login.spec.ts` — consuming the **shared** `components/auth/` module above for session state and the sign-in button.
+- `about-saa-2025` / `award-information` — thin static-content screens with only the `app/` layer populated: `app/about-saa-2025/page.tsx` and `app/award-information/page.tsx` are self-contained server components (translated copy via `useTranslations`, no interactivity) with no `components/<feature>/` folder and no `lib/<feature>/` folder — there's no state, form, or query to justify either layer (YAGNI). Both compose the **shared** `components/layout/header.tsx` + `footer.tsx` directly.
 
 # 🤖 System Role & Execution Protocol
 
@@ -110,6 +115,16 @@ Do not write a single line of code until you have executed the following inspect
 
 ---
 
+## 🔒 Security (P1)
+
+- **No PII in logs:** never `console.log`/log to server output a user's email, phone, or the raw content of a private message (e.g. kudos body, recipient list) — log an id/reference instead.
+- **DB access only through `lib/<feature>/queries.ts` / `mutations.ts`** using the Supabase client — no raw SQL string interpolation, no bypassing the query/mutation layer from a component.
+- **RLS is part of the change:** any new table/column touched by a migration under `supabase/migrations/` must have a Row Level Security policy reviewed alongside it — a schema change without an RLS check is incomplete.
+- **Never expose secrets client-side:** only `NEXT_PUBLIC_*` env vars may reach the browser bundle; the Supabase `service_role` key and other secrets stay server-only.
+- **Auth bypass is P1** — any change that lets a request reach an auth-gated route/data without a valid session (see `lib/supabase/middleware.ts`), or that leaks another user's data across the recipient/session boundary, must be blocked immediately and never merged, no exceptions.
+
+---
+
 ## 🧪 Phase 3: Quality Assurance & Guardrails
 
 ### 1. Self-Correction & Code Review (Mandatory before declaring "Done")
@@ -127,9 +142,33 @@ Before proposing or finalizing any code changes, mentally execute a review pass 
 - Auth-gated flows: don't automate real OAuth. Provision a session via Supabase's local Admin API in a Playwright global-setup (magic link → `/auth/callback` → save `storageState`), then reuse that storage state across specs. See `e2e/` for the existing pattern.
 - Run the full suite affecting your change (both unit and e2e) before declaring work complete; all tests must pass.
 
+### 3. Review Guidelines (Before Opening a PR)
+- [ ] Tests pass: `npm run test` and `npm run test:e2e` — no failures, nothing skipped to force a green run.
+- [ ] No secrets hardcoded in the diff — re-check `git diff` even on innocuous-looking files.
+- [ ] A migration exists under `supabase/migrations/` for any schema change, with its RLS policy reviewed (see Security above).
+- [ ] The PR description has a "Testing" section describing how the change was verified (commands run + manual QA steps).
+
+### 4. Definition of Done
+- [ ] `npm run build` succeeds — no TypeScript errors or warnings.
+- [ ] All tests pass (`npm run test`, `npm run test:e2e`) — none skipped to fake a green build.
+- [ ] `npm run lint` reports no violations.
+- [ ] The final response states plainly: commands actually run, and any residual risk left open.
+- [ ] No leftover TODOs in the new code.
+
 ---
 
 ## 🚫 Absolute Constraints (Hard Blocks)
 
 - **Git Control:** **NEVER** stage, commit, or push code unless explicitly requested by the user.
 - **Ambiguity Protocol:** If a requirement, Figma spec, or API contract is ambiguous or missing information, **STOP IMMEDIATELY**. Ask the user for clarification before writing any code. Do not make assumptions.
+
+---
+
+## 🔁 Feedback Loop: Keeping This File Current
+
+This file is a living document, not a one-time checklist.
+
+- If the same category of mistake recurs 2+ times (e.g. a raw fetch slipping into a component, a schema change landing without a migration/RLS check, PII showing up in a log) — that is a signal this file is missing or unclear on the rule, not a signal to keep repeating the same reminder in the prompt.
+- **1st occurrence:** fix it in place, remind inline in that session.
+- **2nd occurrence of the same category:** stop, add or sharpen the rule here (under Implementation Standards, Security, or Review Guidelines — whichever fits), then continue.
+- The next task should self-comply without being told again — if it doesn't, the rule wasn't written clearly enough.

@@ -1,6 +1,12 @@
 {
   "Header": {
-    "language": "VN"
+    "language": "VN",
+    "navAboutSaa": "Giới thiệu SAA 2025",
+    "navAwardInfo": "Thông tin giải thưởng",
+    "navKudos": "Sun* Kudos",
+    "avatarAriaLabel": "Xem trang cá nhân của tôi",
+    "profile": "Hồ sơ",
+    "logout": "Đăng xuất"
   },
   "Footer": {
     "copyright": "Bản quyền thuộc về Sun* © 2025"
@@ -12,6 +18,108 @@
   },
   "KudosPage": {
     "writeKudoButton": "Viết Kudo"
+  },
+  "AboutSaaPage": {
+    "heading": "Giới thiệu Sun* Annual Awards 2025",
+    "intro": "Sun* Annual Awards là sự kiện thường niên tôn vinh những cá nhân và đội nhóm đã góp phần đưa Sun* tiến xa hơn — ghi nhận sự tận tâm, tinh thần đồng đội và những đóng góp nhỏ mỗi ngày làm nên điều lớn lao.",
+    "bulletTimeline": "Chương trình kéo dài suốt mùa giải: đề cử, bình chọn cộng đồng và lễ trao giải khép lại.",
+    "bulletCategories": "Các hạng mục giải thưởng gồm sự tận tâm, tinh thần đồng đội, sáng tạo và tinh thần cộng đồng.",
+    "bulletCommunity": "Mọi Sunner đều có thể đề cử, bình chọn và gửi Kudos để ghi nhận đồng đội."
+  },
+  "AwardInformationPage": {
+    "heading": "Thông tin giải thưởng",
+    "intro": "Đây là cách Sun* Annual Awards 2025 vận hành — từ cách chọn ra người chiến thắng đến những gì đang chờ đón họ trên sân khấu.",
+    "bulletCriteria": "Người chiến thắng được chọn dựa trên đề cử từ đồng nghiệp, số Kudos nhận được và đánh giá của ban giám khảo.",
+    "bulletPrizes": "Mỗi hạng mục đi kèm huy hiệu ghi nhận và phần thưởng sẽ được công bố gần ngày lễ trao giải.",
+    "bulletCeremony": "Kết quả được công bố trực tiếp tại sự kiện lễ trao giải thường niên."
+  },
+  "KudosLiveBoard": {
+    "common": {
+      "loading": "Đang tải"
+    },
+    "banner": {
+      "title": "Hệ thống ghi nhận và cảm ơn"
+    },
+    "entryBar": {
+      "placeholder": "Hôm nay, bạn muốn gửi lời cảm ơn và ghi nhận đến ai?"
+    },
+    "sunnerSearch": {
+      "placeholder": "Tìm kiếm profile Sunner",
+      "noResults": "Không tìm thấy Sunner phù hợp"
+    },
+    "filters": {
+      "allOption": "Tất cả",
+      "hashtagLabel": "Hashtag",
+      "departmentLabel": "Phòng ban",
+      "noOptions": "Không có lựa chọn"
+    },
+    "sectionEyebrow": "Sun* Annual Awards 2025",
+    "highlight": {
+      "heading": "HIGHLIGHT KUDOS",
+      "empty": "Hiện tại chưa có Kudos nào.",
+      "prevAriaLabel": "Kudos trước",
+      "nextAriaLabel": "Kudos tiếp theo",
+      "positionAriaLabel": "Kudos {current} trên {total}"
+    },
+    "allKudos": {
+      "heading": "ALL KUDOS",
+      "empty": "Hiện tại chưa có Kudos nào."
+    },
+    "spotlight": {
+      "heading": "SPOTLIGHT BOARD",
+      "searchPlaceholder": "Tìm kiếm",
+      "searchAriaLabel": "Tìm kiếm sunner",
+      "empty": "Chưa có dữ liệu",
+      "expandView": "Phóng to toàn màn hình",
+      "collapseView": "Thoát toàn màn hình",
+      "totalLabel": "{count} KUDOS",
+      "activityNotice": "{name} đã nhận được một Kudos mới"
+    },
+    "sidebar": {
+      "received": "Số Kudos bạn nhận được:",
+      "sent": "Số Kudos bạn đã gửi:",
+      "hearts": "Số tim bạn nhận được:",
+      "secretBoxOpened": "Số Secret Box bạn đã mở:",
+      "secretBoxUnopened": "Số Secret Box chưa mở:",
+      "openSecretBox": "Mở Secret Box",
+      "comingSoon": "Tính năng sắp ra mắt",
+      "giftListTitle": "10 SUNNER NHẬN QUÀ MỚI NHẤT",
+      "giftListEmpty": "Chưa có dữ liệu"
+    },
+    "card": {
+      "viewDetail": "Xem chi tiết",
+      "editButton": "Sửa",
+      "unknownUser": "Người dùng không xác định"
+    },
+    "party": {
+      "anonymousSenderLabel": "Người gửi ẩn danh",
+      "anonymousFallbackName": "Ẩn danh"
+    },
+    "heart": {
+      "like": "Thích Kudos này",
+      "unlike": "Bỏ thích Kudos này"
+    },
+    "copyLink": {
+      "button": "Copy Link",
+      "success": "Đã sao chép liên kết, sẵn sàng để chia sẻ!",
+      "error": "Không thể sao chép liên kết, vui lòng thử lại."
+    },
+    "images": {
+      "viewImage": "Xem ảnh {index}",
+      "close": "Đóng"
+    },
+    "star": {
+      "threshold1": "Đã nhận 10 Kudos trở lên",
+      "threshold2": "Đã nhận 20 Kudos trở lên",
+      "threshold3": "Đã nhận 50 Kudos trở lên"
+    },
+    "profile": {
+      "currentUserBadge": "Bạn",
+      "starsAriaLabel": "{stars}/{max} sao",
+      "statsReceived": "Kudos đã nhận",
+      "statsSent": "Kudos đã gửi",
+      "statsHearts": "Lượt tim nhận được"
+    }
   },
   "KudosModal": {
     "noHashtagsAvailable": "Chưa có hashtag nào",
@@ -67,5 +175,15 @@
     "submitLoading": "Đang gửi...",
     "submitErrorFallback": "Gửi kudos thất bại. Vui lòng thử lại.",
     "submitValidationError": "Bạn cần điền đủ Người nhận, Danh hiệu, Lời nhắn gửi và Hashtag để gửi Kudos!"
+  },
+  "KudosEditModal": {
+    "title": "Chỉnh sửa Kudos của bạn",
+    "loading": "Đang tải...",
+    "loadError": "Tải Kudos thất bại. Vui lòng thử lại.",
+    "cancelButton": "Hủy",
+    "saveButton": "Lưu",
+    "saveLoading": "Đang lưu...",
+    "submitErrorFallback": "Lưu thay đổi thất bại. Vui lòng thử lại.",
+    "validationError": "Bạn cần điền đủ Danh hiệu, Lời nhắn gửi và Hashtag để lưu!"
   }
 }

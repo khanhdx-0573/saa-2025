@@ -16,6 +16,36 @@
         "bl": [],
         "perms": []
       }
+    },
+    {
+      "fcode": "F002",
+      "name": "Kudos Live Board",
+      "slug": "F002_KudosLiveBoard",
+      "priority": "P1",
+      "type": "mixed",
+      "related": {
+        "screens": [],
+        "user_stories": ["US001", "US002", "US003", "US004", "US005", "US006", "US007", "US008", "US009", "US010"],
+        "routes": ["/kudos", "/kudos/[id]", "/profile/[id]"],
+        "models": ["kudos_likes"],
+        "bl": ["toggle_kudos_like", "get_kudos_feed", "get_highlight_kudos", "get_spotlight_nodes", "get_kudos_detail", "get_kudos_stats"],
+        "perms": []
+      }
+    },
+    {
+      "fcode": "F003",
+      "name": "Site Header Navigation",
+      "slug": "F003_SiteHeaderNavigation",
+      "priority": "P2",
+      "type": "frontend",
+      "related": {
+        "screens": [],
+        "user_stories": [],
+        "routes": ["/about-saa-2025", "/award-information"],
+        "models": [],
+        "bl": [],
+        "perms": []
+      }
     }
   ]
 }

@@ -1,0 +1,35 @@
+{
+  "task": "Site Header Navigation — Authenticated app header rewrite (nav tabs + bell + avatar) + 2 static mock pages + i18n",
+  "mode": "interactive",
+  "acceptanceCriteria": [
+    "FR-001: Nav tabs + bell + avatar render iff authenticated; render nothing when unauthenticated",
+    "FR-002: Active tab shows gold text + underline + aria-current='page'; inactive tabs white text",
+    "FR-003: 'Sun* Kudos' nav tab → /kudos route",
+    "FR-006: Bell is decorative, non-interactive (no button role, no tab stop, no aria-label)",
+    "FR-007: Avatar link navigates to signed-in user's OWN /profile/{id}, not another user's",
+    "FR-008: Language switcher persists and functional in both auth states",
+    "FR-009: Unauthenticated /about-saa-2025 and /award-information redirect to /login",
+    "No regression: /login header unchanged (logo + language switcher only)",
+    "All strings localized: en.json + vi.json both updated with nav labels"
+  ],
+  "touchpoints": [
+    "components/layout/header.tsx (client component rewrite)",
+    "components/layout/header-icons.tsx (new SVG icons)",
+    "components/layout/header.test.tsx (new unit tests)",
+    "e2e/site-navigation.spec.ts (new e2e navigation tests)",
+    "app/about-saa-2025/page.tsx (new static mock page)",
+    "app/award-information/page.tsx (new static mock page)",
+    "messages/en.json (Header namespace keys)",
+    "messages/vi.json (Header namespace keys)"
+  ],
+  "blastRadius": {
+    "highRisk": [
+      "e2e/login.spec.ts — shared header chrome; must verify no accessible-name collision with new nav links",
+      "e2e/kudos.spec.ts — shared header chrome; must verify compose form selectors don't collide with new nav",
+      "e2e/kudos-live-board.spec.ts — shared header chrome; must verify live board queries unaffected"
+    ],
+    "sharedComponent": "components/layout/header.tsx renders on every page",
+    "regressionScope": "All existing unit + e2e suites must pass unmodified"
+  },
+  "contracts": []
+}

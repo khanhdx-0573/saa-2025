@@ -7,6 +7,10 @@ export const MAX_KUDOS_CONTENT_CHARS = 1000;
 export const MAX_LINK_TEXT_CHARS = 100;
 export const MIN_LINK_URL_CHARS = 5;
 export const MAX_LINK_URL_CHARS = 2048;
+export const STAR_1_THRESHOLD = 10;
+export const STAR_2_THRESHOLD = 20;
+export const STAR_3_THRESHOLD = 50;
+export const SPOTLIGHT_SEARCH_MAX_CHARS = 100;
 
 const ALLOWED_MIME_TYPES = new Set(["image/jpeg", "image/png"]);
 
@@ -23,4 +27,12 @@ export function isValidLinkUrl(value: string): boolean {
   } catch {
     return false;
   }
+}
+
+/** BR-06: star rating tiers by lifetime received-kudos count. */
+export function starRating(receivedCount: number): 0 | 1 | 2 | 3 {
+  if (receivedCount >= STAR_3_THRESHOLD) return 3;
+  if (receivedCount >= STAR_2_THRESHOLD) return 2;
+  if (receivedCount >= STAR_1_THRESHOLD) return 1;
+  return 0;
 }

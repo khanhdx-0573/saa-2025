@@ -1,0 +1,31 @@
+{
+  "task": "Fix design/functional mismatches on the Kudos Live Board (/kudos) reported by the user against the MoMorph reference: banner rendered far shorter than designed (no vertical padding, image squeezed into a thin strip), the top-level 'Tim kiem profile Sunner' search box was entirely missing, Highlight carousel cards had visibly uneven heights (prev/active/next), kudos content showed literal '<p>...</p>' HTML tags as text instead of rendering formatted content, and the Spotlight board had no decorative background. Root-cause investigation also surfaced a latent bug: the page body background depended on prefers-color-scheme (white on a light-mode browser) instead of the app's fixed dark theme.",
+  "mode": "autonomous",
+  "acceptanceCriteria": [
+    "Sunner search box ('Tim kiem profile Sunner') is present and visible next to the compose entry bar",
+    "Kudos card content renders as real HTML (no literal <p> or </p> substrings visible in rendered text)",
+    "Highlight carousel peek cards are proportionally scaled from the active card, not reflow-drifted to a different natural height",
+    "Page body background is the fixed dark theme (#00101a), not dependent on prefers-color-scheme",
+    "Banner container height matches its background asset's natural aspect ratio (1440x512) instead of collapsing to ~158px",
+    "Spotlight board canvas has a decorative background image instead of a bare solid color"
+  ],
+  "touchpoints": [
+    "components/kudos/kudos-banner.tsx",
+    "components/kudos/sunner-search-bar.tsx (new)",
+    "components/kudos/kudos-page-client.tsx",
+    "components/kudos/highlight-carousel.tsx",
+    "components/kudos/kudos-card.tsx",
+    "lib/kudos/sanitize-content-html.ts (new)",
+    "components/kudos/spotlight-board.tsx",
+    "app/globals.css",
+    "messages/en.json, messages/vi.json",
+    "e2e/kudos-live-board.spec.ts, e2e/kudos.spec.ts"
+  ],
+  "blastRadius": [
+    "F001 compose-flow e2e test (e2e/kudos.spec.ts) — accessible-name collisions from the new SunnerSearchBar combobox and the pre-existing pill-styled compose trigger",
+    "Every page using the shared body background (all routes, via app/globals.css)"
+  ],
+  "contracts": [
+    "sanitizeKudosContentHtml(html: string): string — allowlist-only HTML sanitizer matching kudos-editor.tsx's Tiptap schema (StarterKit + Link + Mention), browser-only (DOMParser)"
+  ]
+}

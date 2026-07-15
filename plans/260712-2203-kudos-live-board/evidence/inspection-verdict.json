@@ -1,0 +1,33 @@
+{
+  "score": 9,
+  "criticalCount": 0,
+  "decision": "SEALED",
+  "acceptanceCovered": [
+    "SC-01: Like increments the card heart count by 1 and marks active; unlike reverses; both persist across reload -- confirmed via toggle_kudos_like RPC (delete/insert on kudos_likes, ±1 delta) + build_kudos_card's live count(*) heart_count (persists across reload by construction, no denormalized counter) + optimistic reconcile pattern in use-kudos-board.ts + passing e2e 'like button with aria-pressed toggles state'",
+    "SC-02: A user's own kudos heart button is disabled/no-op; the toggle RPC rejects self-likes -- confirmed via fresh read of toggle_kudos_like SQL: 'if v_sender_id = auth.uid() then raise exception cannot like your own kudos'",
+    "SC-03: Highlight always shows at most 5 highest-hearted kudos; order updates after like changes -- confirmed via fresh read of get_highlight_kudos SQL: 'order by heart_count desc, k.created_at desc, k.id desc limit 5', heart_count computed live",
+    "SC-04: A filter change updates both sections and resets All-Kudos to page 1 -- confirmed via passing use-kudos-feed.test.tsx 'resets to page 1 with empty results when filters change' (asserts refetch from offset 0) + shared filters prop threaded to both HighlightSection and AllKudosSection",
+    "SC-05: Copy Link places the correct /kudos/{id} URL on the clipboard and a toast appears -- confirmed via code read of copy-link-button.tsx (navigator.clipboard.writeText + success/error toast) and buildKudosDetailUrl in lib/kudos/queries-mappers.ts producing `${origin}/kudos/${id}` + passing e2e 'copy link button appears on cards'",
+    "SC-06: Infinite scroll loads further pages with no duplicated or skipped cards -- confirmed via passing use-kudos-feed.test.tsx 'dedups by id across overlapping pages' and 'sets hasMore to false once a short page is returned'",
+    "SC-07: Spotlight node sizes correlate with received counts; clicking a node opens the correct detail -- confirmed via passing spotlight-layout.test.tsx (font size scales linearly with receivedCount) and spotlight-board.test.tsx ('calls onOpenDetail with the clicked node's lastKudosId')",
+    "SC-08: Sidebar received/sent/hearts equal the DB counts for the current user -- confirmed via fresh read of get_kudos_stats SQL: received/sent/hearts are all direct count(*) against public.kudos / public.kudos_likes, consumed as-is by app/profile/[id]/page.tsx",
+    "SC-09: Star badge count matches the 10/20/50 thresholds -- confirmed via passing lib/kudos/validation.test.ts exhaustive boundary tests (9->0, 10->1, 19->1, 20->2, 49->2, 50->3)",
+    "SC-10: Anonymous card hides the sender identity, like works, and no user's hearts received changes -- confirmed via fresh read: kudos table constraint forces sender_id null when is_anonymous, build_kudos_card returns sender:null for those rows, and get_kudos_stats's own comment states 'Anonymous kudos (sender_id null) never match k.sender_id = p_user_id, so they are excluded from hearts for free'; toggle_kudos_like only keys off kudos_id so liking still works",
+    "SC-11: Profile and Detail pages render real data read-only and return 404 on a missing id -- confirmed via code read of app/kudos/[id]/page.tsx and app/profile/[id]/page.tsx (both call notFound() when the row is absent), passing e2e 'invalid kudos id returns 404-like response' and 'invalid profile id returns 404-like response', and my own psql check that all 4 real profile UUIDs now used in gift-recipients-list.tsx exist in public.profiles",
+    "SC-12: After integration, all board strings resolve through en/vi catalogs; no hardcoded JSX copy -- confirmed via grep sweep of components/kudos and app/kudos,app/profile finding no literal JSX text outside t() calls (except the explicitly-documented mock prize/name strings in gift-recipients-list.tsx, which are intentional per FR-015/spec) and spot-checked key parity across messages/en.json and messages/vi.json for every key touched"
+  ],
+  "regressionChecked": [
+    "npx tsc --noEmit -- clean, zero errors",
+    "npx eslint app components lib -- clean, zero warnings/errors",
+    "npm run test -- --run -- 85/85 unit tests passed across 7 files",
+    "npm run build -- production build succeeds, all routes (including /kudos, /kudos/[id], /profile/[id]) compile and generate",
+    "npm run test:e2e -- full Playwright suite 16/16 passed (login, F001 kudos compose, F002 kudos-live-board incl. auth-gating redirects and 404-like behavior)",
+    "grep -rn lib/profile/queries across *.ts/*.tsx -- zero remaining importers after deletion",
+    "psql query against local Supabase (127.0.0.1:54322) confirming all 4 real profile UUIDs used in gift-recipients-list.tsx exist in public.profiles",
+    "gift-recipients-list.tsx key prop now `${recipient.id}-${index}` -- unique per array position even with duplicate ids, no React duplicate-key risk"
+  ],
+  "contractStatus": "OK",
+  "refuted": [],
+  "unproven": [],
+  "reachableRegressions": []
+}

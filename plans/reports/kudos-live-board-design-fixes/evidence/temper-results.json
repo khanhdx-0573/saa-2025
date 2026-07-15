@@ -1,0 +1,39 @@
+{
+  "commands": [
+    {
+      "command": "npm run test -- --run",
+      "exitCode": 0,
+      "status": "pass",
+      "summary": "Test Files 8 passed (8); Tests 97 passed (97) — includes 12 new sanitize-content-html.test.ts cases added per reviewer's high-priority follow-up",
+      "ts": "2026-07-13T06:51:49Z"
+    },
+    {
+      "command": "npx tsc --noEmit",
+      "exitCode": 0,
+      "status": "pass",
+      "summary": "TypeScript strict compile clean, zero errors",
+      "ts": "2026-07-13T06:42:11Z"
+    },
+    {
+      "command": "npx eslint app components lib e2e",
+      "exitCode": 0,
+      "status": "pass",
+      "summary": "Zero errors; one pre-existing unrelated warning (unused var in a test not touched by this fix)",
+      "ts": "2026-07-13T06:42:11Z"
+    },
+    {
+      "command": "npm run build",
+      "exitCode": 0,
+      "status": "pass",
+      "summary": "Next.js production build succeeded; all routes compiled",
+      "ts": "2026-07-13T06:42:11Z"
+    },
+    {
+      "command": "npm run test:e2e",
+      "exitCode": 0,
+      "status": "pass",
+      "summary": "20 passed (Playwright, production build, local Supabase live) — includes 4 new regression tests pinning the search box, HTML content rendering, carousel scale ratio, and dark body background",
+      "ts": "2026-07-13T06:42:11Z"
+    }
+  ]
+}

@@ -1,6 +1,12 @@
 {
   "Header": {
-    "language": "EN"
+    "language": "EN",
+    "navAboutSaa": "About SAA 2025",
+    "navAwardInfo": "Award Information",
+    "navKudos": "Sun* Kudos",
+    "avatarAriaLabel": "View my profile",
+    "profile": "Profile",
+    "logout": "Logout"
   },
   "Footer": {
     "copyright": "Copyright belongs to Sun* © 2025"
@@ -12,6 +18,108 @@
   },
   "KudosPage": {
     "writeKudoButton": "Write Kudo"
+  },
+  "AboutSaaPage": {
+    "heading": "About Sun* Annual Awards 2025",
+    "intro": "Sun* Annual Awards is our yearly celebration of the people and teams who push Sun* forward — recognizing craft, collaboration, and the everyday wins that add up to something bigger.",
+    "bulletTimeline": "A season-long program: nominations, community voting, and a closing ceremony.",
+    "bulletCategories": "Awards span craftsmanship, teamwork, innovation, and community spirit.",
+    "bulletCommunity": "Every Sunner can nominate, vote, and send Kudos to recognize a teammate."
+  },
+  "AwardInformationPage": {
+    "heading": "Award Information",
+    "intro": "Here's how Sun* Annual Awards 2025 works — from how winners are chosen to what's waiting for them on stage.",
+    "bulletCriteria": "Winners are selected by a mix of peer nominations, Kudos received, and jury review.",
+    "bulletPrizes": "Award categories come with recognition badges and prizes revealed closer to the ceremony.",
+    "bulletCeremony": "The results are announced live at the annual celebration event."
+  },
+  "KudosLiveBoard": {
+    "common": {
+      "loading": "Loading"
+    },
+    "banner": {
+      "title": "Recognition & thank-you system"
+    },
+    "entryBar": {
+      "placeholder": "Who would you like to send thanks and recognition to today?"
+    },
+    "sunnerSearch": {
+      "placeholder": "Search Sunner profile",
+      "noResults": "No matching Sunner found"
+    },
+    "filters": {
+      "allOption": "All",
+      "hashtagLabel": "Hashtag",
+      "departmentLabel": "Department",
+      "noOptions": "No options available"
+    },
+    "sectionEyebrow": "Sun* Annual Awards 2025",
+    "highlight": {
+      "heading": "HIGHLIGHT KUDOS",
+      "empty": "There are no Kudos yet.",
+      "prevAriaLabel": "Previous Kudos",
+      "nextAriaLabel": "Next Kudos",
+      "positionAriaLabel": "Kudos {current} of {total}"
+    },
+    "allKudos": {
+      "heading": "ALL KUDOS",
+      "empty": "There are no Kudos yet."
+    },
+    "spotlight": {
+      "heading": "SPOTLIGHT BOARD",
+      "searchPlaceholder": "Search",
+      "searchAriaLabel": "Search for a Sunner",
+      "empty": "No data yet",
+      "expandView": "Expand to fullscreen",
+      "collapseView": "Exit fullscreen",
+      "totalLabel": "{count} KUDOS",
+      "activityNotice": "{name} just received a new Kudos"
+    },
+    "sidebar": {
+      "received": "Kudos you've received:",
+      "sent": "Kudos you've sent:",
+      "hearts": "Hearts you've received:",
+      "secretBoxOpened": "Secret Boxes you've opened:",
+      "secretBoxUnopened": "Secret Boxes unopened:",
+      "openSecretBox": "Open Secret Box",
+      "comingSoon": "Coming soon",
+      "giftListTitle": "TOP 10 LATEST GIFT WINNERS",
+      "giftListEmpty": "No data yet"
+    },
+    "card": {
+      "viewDetail": "View detail",
+      "editButton": "Edit",
+      "unknownUser": "Unknown user"
+    },
+    "party": {
+      "anonymousSenderLabel": "Anonymous sender",
+      "anonymousFallbackName": "Anonymous"
+    },
+    "heart": {
+      "like": "Like this Kudos",
+      "unlike": "Unlike this Kudos"
+    },
+    "copyLink": {
+      "button": "Copy Link",
+      "success": "Link copied — ready to share!",
+      "error": "Couldn't copy the link, please try again."
+    },
+    "images": {
+      "viewImage": "View image {index}",
+      "close": "Close"
+    },
+    "star": {
+      "threshold1": "Received 10+ Kudos",
+      "threshold2": "Received 20+ Kudos",
+      "threshold3": "Received 50+ Kudos"
+    },
+    "profile": {
+      "currentUserBadge": "You",
+      "starsAriaLabel": "{stars}/{max} stars",
+      "statsReceived": "Kudos received",
+      "statsSent": "Kudos sent",
+      "statsHearts": "Hearts received"
+    }
   },
   "KudosModal": {
     "noHashtagsAvailable": "No hashtags available",
@@ -67,5 +175,15 @@
     "submitLoading": "Sending...",
     "submitErrorFallback": "Failed to send kudos. Please try again.",
     "submitValidationError": "You need to fill in Recipient, Title, Message, and Hashtag to send Kudos!"
+  },
+  "KudosEditModal": {
+    "title": "Edit your Kudos",
+    "loading": "Loading...",
+    "loadError": "Failed to load this Kudos. Please try again.",
+    "cancelButton": "Cancel",
+    "saveButton": "Save",
+    "saveLoading": "Saving...",
+    "submitErrorFallback": "Failed to save changes. Please try again.",
+    "validationError": "You need to fill in Title, Message, and Hashtag to save!"
   }
 }
