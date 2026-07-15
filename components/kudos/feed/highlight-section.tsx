@@ -49,13 +49,13 @@ export function HighlightSection({
 
   return (
     <section className="flex w-full flex-col gap-6" aria-label="Highlight kudos">
-      <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-4 px-36">
+      <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-4 px-4 sm:px-6 lg:px-36">
         <h2 className="font-montserrat text-2xl font-bold text-details-text-secondary-1">
           {t("sectionEyebrow")}
         </h2>
         <div className="h-px w-full bg-details-divider" />
-        <div className="flex items-center justify-between gap-8">
-          <h1 className="font-montserrat text-[57px] font-bold leading-[64px] tracking-[-0.25px] text-details-text-primary-1">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
+          <h1 className="font-montserrat text-3xl font-bold text-details-text-primary-1 lg:text-[57px] lg:leading-[64px] lg:tracking-[-0.25px]">
             {t("highlight.heading")}
           </h1>
           <KudosFilters value={filters} hashtags={hashtags} departments={departments} onChange={onFiltersChange} />

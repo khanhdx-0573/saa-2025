@@ -24,7 +24,7 @@ export default function KudosPage() {
          `aspect-[1440/512]` box instead, letting the dropdown overflow freely
          below it. */}
       <div className="relative w-full">
-        <div className="absolute inset-x-0 top-0 aspect-[1440/512] overflow-hidden">
+        <div className="absolute inset-x-0 top-0 aspect-[4/3] overflow-hidden sm:aspect-[16/9] lg:aspect-[1440/512]">
           <Image src="/kudos/kv-background.png" alt="" fill priority className="object-cover" />
           {/* fix-bug: this left→right darkening is NOT baked into the raw
              asset (confirmed by sampling public/kudos/kv-background.png's

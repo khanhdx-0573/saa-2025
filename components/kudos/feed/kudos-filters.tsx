@@ -58,17 +58,15 @@ function FilterDropdown({
         onClick={onToggle}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
-        className="flex items-center gap-2 rounded border border-details-border bg-details-textbutton-normal px-4 py-4 font-montserrat text-base font-bold tracking-[0.15px] text-details-text-secondary-1"
+        className="flex w-full flex-1 items-center justify-between gap-2 rounded border border-details-border bg-details-textbutton-normal px-3 py-3 font-montserrat text-sm font-bold tracking-[0.15px] text-details-text-secondary-1 sm:w-auto sm:flex-none sm:justify-start sm:px-4 sm:py-4 sm:text-base"
       >
         {isFiltered ? selectedLabel : label}
-        <ChevronDownIcon className={isOpen ? "rotate-180" : undefined} />
+        <ChevronDownIcon className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
       </button>
       {isOpen && (
         <ul
           role="listbox"
-          // `max-h-[420px]` fits every current option without a scrollbar (the
-          // list should read as fully open); overflow stays on as a safety net.
-          className="scrollbar-thin absolute right-0 z-20 mt-2 max-h-[420px] w-56 overflow-y-auto rounded border border-details-border bg-details-background py-2 shadow-lg"
+          className="scrollbar-thin absolute left-0 right-0 z-20 mt-2 max-h-[420px] animate-[fadeSlideIn_200ms_ease-out] overflow-y-auto rounded border border-details-border bg-details-background py-2 shadow-lg sm:left-auto sm:w-56"
         >
           {options.length <= 1 ? (
             <li className="px-4 py-2 font-montserrat text-sm font-bold text-details-text-secondary-2">
@@ -153,7 +151,7 @@ export function KudosFilters({ value, hashtags, departments, onChange }: KudosFi
   }
 
   return (
-    <div ref={containerRef} className="flex items-center gap-2">
+    <div ref={containerRef} className="flex w-full items-center gap-2 sm:w-auto">
       <FilterDropdown
         label={t("filters.hashtagLabel")}
         selectedLabel={selectedHashtag ? `#${selectedHashtag.name}` : allOptionLabel}

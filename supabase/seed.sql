@@ -31,6 +31,18 @@ values
   ('a0000000-0000-0000-0000-000000000010', 'thu.dang@seed.local',     '{"full_name":"Đặng Thị Thu"}',    now(), now())
 on conflict (id) do nothing;
 
+-- E2E fixture profiles referenced by kudos rows below (b0000...0011–0013,
+-- b0000...0024, b0000...0027). On a fresh `supabase start` the e2e global-setup
+-- hasn't run yet, so these must exist in seed or the FK will reject.
+insert into auth.users (id, email, raw_user_meta_data, created_at, updated_at)
+values
+  ('1004d5e5-2f89-4618-a674-736330091d6d', 'e2e-recipient@seed.local', '{"full_name":"E2E Recipient"}', now(), now()),
+  ('03a6ff6f-bcb8-4482-af64-d1cb9769e93c', 'e2e-recipient2@seed.local', '{"full_name":"E2E Recipient 2"}', now(), now())
+on conflict (id) do nothing;
+
+update public.profiles set department = 'CEV2' where id = '1004d5e5-2f89-4618-a674-736330091d6d';
+update public.profiles set department = 'CEV3' where id = '03a6ff6f-bcb8-4482-af64-d1cb9769e93c';
+
 -- The auth.users trigger (handle_auth_user_sync) creates the matching
 -- public.profiles row but has no department source — set it explicitly.
 update public.profiles set department = 'CEV2'   where id = 'a0000000-0000-0000-0000-000000000001';

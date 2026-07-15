@@ -51,16 +51,12 @@ export function LanguageSwitcher() {
         <Image src="/login/chevron-down.svg" alt="" width={24} height={24} />
       </button>
 
-      {isOpen && (
-        <ul
-          role="listbox"
-          /* z-20, not the usual z-10: on /kudos this dropdown shares a z-10
-             stacking context (app/kudos/page.tsx's Header+KudosBanner
-             wrapper) with KudosBanner's own z-10 content layer; at equal
-             z-index, KudosBanner (later in the DOM) wins ties and intercepts
-             clicks on the options — see the same fix on profile-dropdown.tsx. */
-          className="absolute right-0 z-20 flex flex-col items-start overflow-clip rounded-lg border border-details-border bg-details-container-2 p-1.5"
-        >
+      <div
+        className={`absolute right-0 z-20 flex flex-col items-start overflow-clip rounded-lg border border-details-border bg-details-container-2 p-1.5 ${
+          isOpen ? "animate-[fadeSlideIn_200ms_ease-out]" : "hidden"
+        }`}
+      >
+        <ul role="listbox">
           {locales.map((value) => (
             <li key={value} role="option" aria-selected={value === locale} className="w-full">
               <button
@@ -76,7 +72,7 @@ export function LanguageSwitcher() {
             </li>
           ))}
         </ul>
-      )}
+      </div>
     </div>
   );
 }

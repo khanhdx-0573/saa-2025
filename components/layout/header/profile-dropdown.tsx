@@ -54,9 +54,7 @@ export function ProfileDropdown({ userId }: { userId: string }) {
       {isOpen && (
         <div
           role="menu"
-          /* z-20, not z-10: on /kudos this shares a z-10 stacking context with KudosBanner,
-             which (later in the DOM) wins ties and intercepts clicks on the menu items. */
-          className="absolute right-0 z-20 flex w-max flex-col overflow-clip rounded-lg border border-details-border bg-details-container-2 p-1.5"
+          className="absolute right-0 z-20 flex w-max origin-top-right animate-[fadeSlideIn_200ms_ease-out] flex-col overflow-clip rounded-lg border border-details-border bg-details-container-2 p-1.5"
         >
           <Link
             href={`/profile/${userId}`}

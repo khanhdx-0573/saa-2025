@@ -64,15 +64,15 @@ export function RecipientField({ value, onChange, excludeUserId }: RecipientFiel
   const displayValue = value && query.length === 0 ? value.full_name ?? t("unknownUser") : query;
 
   return (
-    <div className="flex flex-1 items-center gap-4">
-      <label className="w-[120px] shrink-0 whitespace-nowrap font-montserrat text-lg font-bold text-details-text-primary-2">
+    <div className="flex flex-1 flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
+      <label className="font-montserrat text-lg font-bold text-details-text-primary-2 sm:w-[120px] sm:shrink-0 sm:whitespace-nowrap">
         {t("recipientLabel")}{" "}
         <span className="text-details-required-mark" aria-hidden="true">
           *
         </span>
       </label>
       <div className="relative flex-1">
-        <div className="flex h-12 w-full items-center justify-between gap-4 rounded-lg border border-details-border bg-details-text-secondary-1 px-5">
+        <div className="flex h-11 w-full items-center justify-between gap-3 rounded-lg border border-details-border bg-details-text-secondary-1 px-4 sm:h-12 sm:gap-4 sm:px-5">
           <input
             type="text"
             role="combobox"

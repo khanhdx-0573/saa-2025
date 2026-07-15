@@ -40,8 +40,8 @@ export function HashtagField({ hashtags, selectedIds, onChange }: HashtagFieldPr
   }
 
   return (
-    <div className="flex flex-1 items-start gap-4">
-      <label className="w-[120px] shrink-0 whitespace-nowrap font-montserrat text-lg font-bold text-details-text-primary-2">
+    <div className="flex flex-1 flex-col gap-2 sm:flex-row sm:items-start sm:gap-4">
+      <label className="font-montserrat text-lg font-bold text-details-text-primary-2 sm:w-[120px] sm:shrink-0 sm:whitespace-nowrap">
         {t("hashtagLabel")}{" "}
         <span className="text-details-required-mark" aria-hidden="true">
           *
@@ -80,7 +80,7 @@ export function HashtagField({ hashtags, selectedIds, onChange }: HashtagFieldPr
           </span>
         </button>
         {isOpen && (
-          <div className="absolute left-0 top-full z-20 mt-2 w-64">
+          <div className="absolute left-0 right-0 top-full z-20 mt-2 animate-[fadeSlideIn_200ms_ease-out] sm:left-0 sm:right-auto sm:w-64">
             <HashtagPicker
               hashtags={hashtags}
               selectedIds={selectedIds}

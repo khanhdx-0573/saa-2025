@@ -52,11 +52,11 @@ export function KudosPageClient() {
           onOpenProfile={handleOpenProfile}
         />
 
-        <div className="mx-auto w-full max-w-[1440px] px-36">
+        <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-6 lg:px-36">
           <SpotlightBoard data={spotlightData} loading={spotlightLoading} onOpenDetail={handleOpenDetail} />
         </div>
 
-        <div className="mx-auto flex w-full max-w-[1440px] flex-col items-start gap-10 px-36 lg:flex-row lg:justify-between">
+        <div className="mx-auto flex w-full max-w-[1440px] flex-col items-start gap-10 px-4 sm:px-6 lg:flex-row lg:justify-between lg:px-36">
           <div className="min-w-0 flex-1">
             <AllKudosSection
               filters={filters}

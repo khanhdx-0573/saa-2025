@@ -39,14 +39,14 @@ export function SpotlightActivityTicker({ activity }: SpotlightActivityTickerPro
 
   return (
     <div
-      className="pointer-events-none absolute bottom-4 left-6 z-10 flex flex-col-reverse gap-1"
+      className="pointer-events-none absolute bottom-2 left-3 z-10 flex max-w-[calc(100%-24px)] flex-col-reverse gap-0.5 sm:bottom-4 sm:left-6 sm:max-w-[calc(100%-48px)] sm:gap-1"
       aria-hidden="true"
     >
       {recent.map((item, index) => (
         <p
           key={item.kudosId}
           style={{ opacity: Math.max(MIN_OPACITY, 1 - index * OPACITY_STEP) }}
-          className="whitespace-nowrap text-details-text-secondary-1"
+          className="truncate whitespace-nowrap text-details-text-secondary-1"
         >
           {/* Momorph spec: the clock prefix and the message tail are two
              distinct type styles, not one uniform size — 14px/20px
@@ -54,10 +54,10 @@ export function SpotlightActivityTicker({ activity }: SpotlightActivityTickerPro
              for "{name} đã nhận được một Kudos mới" (Tailwind's `text-sm
              leading-5` and `text-base leading-6` happen to match 14/20 and
              16/24 exactly). */}
-          <span className="font-montserrat text-sm font-bold tracking-[0.1px]">
+          <span className="font-montserrat text-[10px] font-bold tracking-[0.1px] sm:text-sm">
             {formatTickerTime(item.receivedAt)}
           </span>{" "}
-          <span className="font-montserrat text-base font-bold tracking-[0.15px]">
+          <span className="font-montserrat text-[11px] font-bold tracking-[0.15px] sm:text-base">
             {t("spotlight.activityNotice", { name: item.fullName })}
           </span>
         </p>

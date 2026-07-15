@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { KudosCard, type KudosCardData } from "@/components/kudos/feed/kudos-card";
 import { ChevronRightIcon } from "@/components/kudos/kudos-live-board-icons";
@@ -17,21 +17,20 @@ export type HighlightCarouselProps = {
 };
 
 const MAX_CARDS = 5;
-// Cards render full-size (no scale/dim/blur) in an edge-to-edge 1440px row.
-// The "peek" effect comes entirely from the viewport clipping what doesn't fit
-// plus the two edge-fade gradients below — not from any per-card styling.
+// Desktop-only pixel constants — mobile uses CSS-based layout instead.
 const CARD_WIDTH_PX = 528;
 const CARD_GAP_PX = 24; // gap-6
 const VIEWPORT_WIDTH_PX = 1440;
 const EDGE_FADE_WIDTH_PX = 400;
+// Matches Tailwind's `lg` breakpoint — below this, single-card mode activates.
+const MOBILE_BREAKPOINT_PX = 1024;
 
 const NOOP = () => {};
 
 /**
- * ≤5-card highlight carousel: all cards in a single sliding row (animated
- * `translateX`), but only the active one is interactive — the rest are
- * `pointer-events-none`/`aria-hidden` with no-op callbacks. Slide position is
- * internal UI state, not part of the props contract.
+ * ≤5-card highlight carousel: desktop renders a sliding row (animated
+ * `translateX`) with edge fades; mobile renders a single full-width card
+ * with prev/next navigation — no JS pixel math on small viewports.
  */
 export function HighlightCarousel({
   cards,
@@ -47,6 +46,34 @@ export function HighlightCarousel({
   const [activeIndex, setActiveIndex] = useState(() => (limitedCards.length > 1 ? 1 : 0));
   const total = limitedCards.length;
 
+  // Responsive: track viewport width to switch between desktop carousel and
+  // mobile single-card mode. `useSyncExternalStore`-style via state + effect.
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT_PX - 1}px)`);
+    setIsMobile(mq.matches);
+    const handler = (event: MediaQueryListEvent) => setIsMobile(event.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  // Touch swipe support for mobile single-card mode
+  const touchStartX = useRef<number | null>(null);
+  const handleTouchStart = useCallback((event: React.TouchEvent) => {
+    touchStartX.current = event.touches[0].clientX;
+  }, []);
+  const handleTouchEnd = useCallback(
+    (event: React.TouchEvent) => {
+      if (touchStartX.current === null) return;
+      const diff = event.changedTouches[0].clientX - touchStartX.current;
+      touchStartX.current = null;
+      if (Math.abs(diff) < 50) return; // ignore small swipes
+      if (diff > 0) setActiveIndex((i) => Math.max(0, i - 1));
+      else setActiveIndex((i) => Math.min(total - 1, i + 1));
+    },
+    [total],
+  );
+
   if (total === 0) return null;
 
   const clampedIndex = Math.min(activeIndex, total - 1);
@@ -61,58 +88,91 @@ export function HighlightCarousel({
     setActiveIndex((current) => Math.min(total - 1, current + 1));
   }
 
-  // Centering in pixels, not a CSS `%` transform — `%` would resolve against
-  // the row's own dynamic width rather than the fixed viewport.
+  // Desktop: centering in pixels — `%` would resolve against the row's own
+  // dynamic width rather than the fixed viewport.
   const rowOffsetPx = (VIEWPORT_WIDTH_PX - CARD_WIDTH_PX) / 2 - clampedIndex * (CARD_WIDTH_PX + CARD_GAP_PX);
 
   return (
     <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center gap-6">
-      {/* Every slot shares the same fixed width (`w-[528px]`) so each card's
-         internal layout — and height — is identical, no uneven reflow. */}
-      <div className="relative mx-auto w-full max-w-[1440px] overflow-hidden">
+      {isMobile ? (
+        /* ── Mobile: single full-width card with swipe ── */
         <div
-          className="flex items-center gap-6 transition-transform duration-500 ease-out"
-          style={{ transform: `translateX(${rowOffsetPx}px)` }}
+          className="relative w-full overflow-hidden px-4"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
         >
           {limitedCards.map((card, index) => {
             const isActive = index === clampedIndex;
             return (
               <div
                 key={card.id}
-                className="w-[528px] shrink-0"
+                className={isActive ? "block" : "hidden"}
                 aria-hidden={!isActive}
                 aria-label={
                   isActive ? t("highlight.positionAriaLabel", { current: clampedIndex + 1, total }) : undefined
                 }
               >
-                <div className={isActive ? undefined : "pointer-events-none"}>
-                  <KudosCard
-                    card={card}
-                    contentLines={3}
-                    showImages={false}
-                    heartDisabled={isActive ? card.sender?.id === currentUserId : true}
-                    detailUrl={buildKudosDetailUrl(card.id)}
-                    onLike={isActive ? onLike : NOOP}
-                    onOpenDetail={isActive ? onOpenDetail : NOOP}
-                    onOpenProfile={isActive ? onOpenProfile : NOOP}
-                  />
-                </div>
+                <KudosCard
+                  card={card}
+                  contentLines={3}
+                  showImages={false}
+                  heartDisabled={isActive ? card.sender?.id === currentUserId : true}
+                  detailUrl={buildKudosDetailUrl(card.id)}
+                  onLike={isActive ? onLike : NOOP}
+                  onOpenDetail={isActive ? onOpenDetail : NOOP}
+                  onOpenProfile={isActive ? onOpenProfile : NOOP}
+                />
               </div>
             );
           })}
         </div>
+      ) : (
+        /* ── Desktop: sliding row with edge fades ── */
+        <div className="relative mx-auto w-full max-w-[1440px] overflow-hidden">
+          <div
+            className="flex items-center gap-6 transition-transform duration-500 ease-out"
+            style={{ transform: `translateX(${rowOffsetPx}px)` }}
+          >
+            {limitedCards.map((card, index) => {
+              const isActive = index === clampedIndex;
+              return (
+                <div
+                  key={card.id}
+                  className="w-[528px] shrink-0"
+                  aria-hidden={!isActive}
+                  aria-label={
+                    isActive ? t("highlight.positionAriaLabel", { current: clampedIndex + 1, total }) : undefined
+                  }
+                >
+                  <div className={isActive ? undefined : "pointer-events-none"}>
+                    <KudosCard
+                      card={card}
+                      contentLines={3}
+                      showImages={false}
+                      heartDisabled={isActive ? card.sender?.id === currentUserId : true}
+                      detailUrl={buildKudosDetailUrl(card.id)}
+                      onLike={isActive ? onLike : NOOP}
+                      onOpenDetail={isActive ? onOpenDetail : NOOP}
+                      onOpenProfile={isActive ? onOpenProfile : NOOP}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
 
-        {/* Edge fades: blend the clipped peek-card slivers into the page
-           background instead of a hard clip line. */}
-        <div
-          className="pointer-events-none absolute inset-y-0 left-0"
-          style={{ width: EDGE_FADE_WIDTH_PX, background: "linear-gradient(90deg, var(--details-background) 50%, transparent 100%)" }}
-        />
-        <div
-          className="pointer-events-none absolute inset-y-0 right-0"
-          style={{ width: EDGE_FADE_WIDTH_PX, background: "linear-gradient(270deg, var(--details-background) 50%, transparent 100%)" }}
-        />
-      </div>
+          {/* Edge fades: blend the clipped peek-card slivers into the page
+             background instead of a hard clip line. */}
+          <div
+            className="pointer-events-none absolute inset-y-0 left-0"
+            style={{ width: EDGE_FADE_WIDTH_PX, background: "linear-gradient(90deg, var(--details-background) 50%, transparent 100%)" }}
+          />
+          <div
+            className="pointer-events-none absolute inset-y-0 right-0"
+            style={{ width: EDGE_FADE_WIDTH_PX, background: "linear-gradient(270deg, var(--details-background) 50%, transparent 100%)" }}
+          />
+        </div>
+      )}
 
       <div className="flex items-center gap-8">
         <button

@@ -57,7 +57,7 @@ export function AllKudosSection({
       <div className="flex w-full flex-col gap-4">
         <h2 className="font-montserrat text-2xl font-bold text-details-text-secondary-1">{t("sectionEyebrow")}</h2>
         <div className="h-px w-full bg-details-divider" />
-        <h3 className="font-montserrat text-[57px] font-bold leading-[64px] tracking-[-0.25px] text-details-text-primary-1">
+        <h3 className="font-montserrat text-3xl font-bold text-details-text-primary-1 lg:text-[57px] lg:leading-[64px] lg:tracking-[-0.25px]">
           {t("allKudos.heading")}
         </h3>
       </div>
