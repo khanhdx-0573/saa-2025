@@ -12,7 +12,7 @@ export function HashtagChips({ hashtags }: HashtagChipsProps) {
 
   return (
     <div className="w-full">
-      <span className="block truncate font-montserrat text-base font-bold tracking-[0.5px] text-details-error">
+      <span className="block truncate font-montserrat text-xs font-bold tracking-[0.5px] text-details-error sm:text-base">
         {visible.map((tag) => `#${tag}`).join(" ")}
       </span>
     </div>

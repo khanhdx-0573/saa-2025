@@ -8,7 +8,7 @@ import { useTranslations } from "next-intl";
 import { useAuth } from "@/components/auth/auth-provider";
 import { createClient } from "@/lib/supabase/client";
 import { LanguageSwitcher } from "@/components/ui/language-switcher";
-import { BellIcon, CloseIcon, HamburgerIcon, ProfileFilledIcon, ChevronRightIcon } from "@/components/layout/header/header-icons";
+import { BellIcon, CloseIcon, HamburgerIcon, ProfileFilledIcon, ChevronRightIcon, LogoutIcon } from "@/components/layout/header/header-icons";
 import { ProfileDropdown } from "@/components/layout/header/profile-dropdown";
 
 type NavItemKey = "navAboutSaa" | "navAwardInfo" | "navKudos";
@@ -85,7 +85,7 @@ export function Header() {
   return (
     <div ref={mobileMenuRef}>
       <header className="flex w-full items-center justify-between bg-details-header-overlay px-6 py-3 lg:px-36">
-        <div className="flex items-center gap-10 lg:gap-16">
+        <div className="flex items-center gap-10 xl:gap-16">
           <Link href="/about-saa-2025" className="shrink-0">
             <Image
               src="/login/sun-logo.png"
@@ -95,8 +95,10 @@ export function Header() {
               className="h-12 w-[52px] object-cover"
             />
           </Link>
-          {/* Desktop nav — hidden on mobile, visible at lg+ */}
-          <nav className="hidden items-center gap-8 lg:flex">
+          {/* Desktop nav — hidden below xl (iPad Pro's 1024px lg: breakpoint
+             left `Giới thiệu SAA 2025` wrapping to 2 lines; deferred to xl:
+             1280px, same fix pattern as kudos-page-client.tsx's sidebar) */}
+          <nav className="hidden items-center gap-8 xl:flex">
             {NAV_ITEMS.map((item) => {
               const active = item.isActive(pathname);
               return (
@@ -117,8 +119,8 @@ export function Header() {
           </nav>
         </div>
 
-        {/* Desktop right cluster — hidden on mobile, visible at lg+ */}
-        <div className="hidden items-center gap-6 lg:flex">
+        {/* Desktop right cluster — hidden below xl, visible at xl+ */}
+        <div className="hidden items-center gap-6 xl:flex">
           <span data-testid="header-bell" aria-hidden="true" className="relative inline-flex text-details-text-secondary-1">
             <BellIcon />
             <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-details-error" />
@@ -127,8 +129,8 @@ export function Header() {
           <ProfileDropdown userId={user.id} />
         </div>
 
-        {/* Mobile right cluster — language switcher + hamburger */}
-        <div className="flex items-center gap-3 lg:hidden">
+        {/* Mobile right cluster — language switcher + hamburger, shown below xl */}
+        <div className="flex items-center gap-3 xl:hidden">
           <LanguageSwitcher />
           <button
             type="button"
@@ -144,7 +146,7 @@ export function Header() {
 
       {/* Mobile sidebar — slide-down animation via max-height transition */}
       <div
-        className={`overflow-hidden border-t border-details-border bg-details-header-overlay transition-all duration-300 ease-in-out lg:hidden ${
+        className={`overflow-hidden border-t border-details-border bg-details-header-overlay transition-all duration-300 ease-in-out xl:hidden ${
           mobileMenuOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
@@ -195,7 +197,10 @@ export function Header() {
             onClick={handleMobileLogout}
             className={`flex items-center justify-between px-8 py-4 font-montserrat text-base font-bold text-details-text-secondary-1 transition-colors duration-200 hover:bg-details-textbutton-normal ${FOCUS_RING}`}
           >
-            {t("logout")}
+            <span className="flex items-center gap-3">
+              <LogoutIcon className="h-5 w-5" />
+              {t("logout")}
+            </span>
             <ChevronRightIcon className="h-5 w-5" />
           </button>
         </div>

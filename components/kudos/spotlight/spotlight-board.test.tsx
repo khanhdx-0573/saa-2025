@@ -33,6 +33,19 @@ vi.mock("next-intl", () => ({
   },
 }));
 
+// jsdom has no matchMedia — stub it so the mobile-font-scale detection
+// (`spotlight-board.tsx`) doesn't throw. Always reports "not mobile"; the
+// desktop/mobile font-scale split itself is covered at the pure-function
+// level by `spotlight-layout.test.tsx`'s `fontScale` cases.
+window.matchMedia =
+  window.matchMedia ??
+  ((query: string) => ({
+    matches: false,
+    media: query,
+    addEventListener: () => {},
+    removeEventListener: () => {},
+  }));
+
 const baseData: SpotlightData = {
   totalKudos: 388,
   nodes: [

@@ -64,9 +64,11 @@ function formatCardTimestamp(iso: string): string {
   return `${hh}:${mm} - ${month}/${day}/${date.getFullYear()}`;
 }
 
+// All Kudos (`contentLines=5`) clamps to 3 lines on mobile — same compactness
+// as Highlight — and only opens up to 5 lines at the `sm:` breakpoint.
 const CONTENT_LINE_CLAMP: Record<3 | 5, string> = {
   3: "line-clamp-3",
-  5: "line-clamp-5",
+  5: "line-clamp-3 sm:line-clamp-5",
 };
 
 /**
@@ -95,19 +97,19 @@ export function KudosCard({
   // real HTML. Memoized since sanitizing walks the DOM.
   const sanitizedContent = useMemo(() => sanitizeKudosContentHtml(card.content), [card.content]);
   const shellClassName = isHighlightStyle
-    ? "flex w-full flex-col gap-4 rounded-2xl border-4 border-details-text-primary-1 bg-details-modal-background px-6 pt-6 pb-4"
-    : "flex w-full flex-col gap-4 rounded-3xl bg-details-modal-background px-10 pt-10 pb-4";
+    ? "flex w-full flex-col gap-3 rounded-xl border-2 border-details-text-primary-1 bg-details-modal-background px-4 pt-4 pb-3 sm:gap-4 sm:rounded-2xl sm:border-4 sm:px-6 sm:pt-6 sm:pb-4"
+    : "flex w-full flex-col gap-3 rounded-2xl bg-details-modal-background px-4 pt-4 pb-3 sm:gap-4 sm:rounded-3xl sm:px-10 sm:pt-10 sm:pb-4";
 
   return (
     <article className={shellClassName}>
-      <div className="flex w-full items-start justify-between gap-6">
+      <div className="flex w-full items-start justify-between gap-2 sm:gap-6">
         <KudosCardParty
           profile={card.sender}
           isAnonymous={card.isAnonymous}
           anonymousDisplayName={card.anonymousDisplayName}
           onOpenProfile={onOpenProfile}
         />
-        <span className="flex shrink-0 items-center self-center py-4 text-details-text-primary-2">
+        <span className="flex shrink-0 items-center self-center py-2 text-details-text-primary-2 sm:py-4">
           <SendIcon />
         </span>
         <KudosCardParty profile={card.recipient} onOpenProfile={onOpenProfile} />
@@ -115,12 +117,12 @@ export function KudosCard({
 
       <div className="h-px w-full bg-details-text-primary-1" />
 
-      <div className="flex w-full flex-col gap-4">
-        <span className="font-montserrat text-base font-bold tracking-[0.5px] text-details-text-secondary-2">
+      <div className="flex w-full flex-col gap-3 sm:gap-4">
+        <span className="font-montserrat text-xs font-bold tracking-[0.5px] text-details-text-secondary-2 sm:text-base">
           {formatCardTimestamp(card.createdAt)}
         </span>
         <div className="flex w-full items-center gap-2">
-          <h3 className="flex-1 text-center font-montserrat text-base font-bold tracking-[0.5px] text-details-text-primary-2">
+          <h3 className="min-w-0 flex-1 break-words text-center font-montserrat text-sm font-bold tracking-[0.5px] text-details-text-primary-2 sm:text-base">
             {card.title}
           </h3>
           {/* Edit pencil is All Kudos/Detail only — never on Highlight. */}
@@ -138,9 +140,9 @@ export function KudosCard({
         </div>
         {/* Content is intentionally a plain `<div>`, not a control: navigation
            happens only through the explicit "Xem chi tiết" button. */}
-        <div className="w-full rounded-xl border border-details-text-primary-1 bg-details-text-primary-1/40 px-6 py-4 text-left">
+        <div className="w-full rounded-xl border border-details-text-primary-1 bg-details-text-primary-1/40 px-4 py-3 text-left sm:px-6 sm:py-4">
           <div
-            className={`font-montserrat text-xl leading-8 text-details-text-primary-2 [&_a]:underline [&_blockquote]:border-l-2 [&_blockquote]:border-details-border [&_blockquote]:pl-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_ul]:list-disc [&_ul]:pl-6 ${truncateContent ? CONTENT_LINE_CLAMP[contentLines] : ""} ${isHighlightStyle ? "min-h-24" : ""}`}
+            className={`break-words font-montserrat text-base leading-6 text-details-text-primary-2 [&_a]:underline [&_blockquote]:border-l-2 [&_blockquote]:border-details-border [&_blockquote]:pl-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_ul]:list-disc [&_ul]:pl-6 sm:text-xl sm:leading-8 ${truncateContent ? CONTENT_LINE_CLAMP[contentLines] : ""} ${isHighlightStyle ? "min-h-16 sm:min-h-24" : ""}`}
             // SSR renders an escaped plain-text fallback (no DOMParser server-side);
             // the client swaps in the sanitized rich HTML on hydration.
             suppressHydrationWarning
@@ -153,14 +155,14 @@ export function KudosCard({
 
       <div className="h-px w-full bg-details-text-primary-1" />
 
-      <div className="flex w-full items-center justify-between gap-6">
+      <div className="flex w-full items-center justify-between gap-2 sm:gap-6">
         <HeartButton
           count={card.heartCount}
           liked={card.likedByMe}
           disabled={heartDisabled}
           onToggle={() => onLike(card.id)}
         />
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 sm:gap-2">
           <CopyLinkButton url={detailUrl} />
           {/* "Xem chi tiết" is Highlight only — All Kudos/Detail show just
              heart + Copy Link. */}
@@ -168,7 +170,7 @@ export function KudosCard({
             <button
               type="button"
               onClick={() => onOpenDetail(card.id)}
-              className="flex shrink-0 cursor-pointer items-center gap-1 rounded px-4 py-4 font-montserrat text-base font-bold text-details-text-primary-2 hover:bg-details-textbutton-normal"
+              className="flex shrink-0 cursor-pointer items-center gap-1 rounded px-2 py-2 font-montserrat text-sm font-bold text-details-text-primary-2 hover:bg-details-textbutton-normal sm:px-4 sm:py-4 sm:text-base"
             >
               {t("card.viewDetail")}
               <ChevronRightIcon />

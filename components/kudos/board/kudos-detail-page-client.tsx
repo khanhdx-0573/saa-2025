@@ -1,11 +1,13 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/components/auth/auth-provider";
 import { KudosCard } from "@/components/kudos/feed/kudos-card";
 import { KudosEditModal } from "@/components/kudos/compose/kudos-edit-modal";
+import { ChevronLeftIcon } from "@/components/kudos/kudos-live-board-icons";
 import { buildKudosDetailUrl, isSelfKudos, mapKudosCardToCardData } from "@/lib/kudos/queries-mappers";
 import { toggleKudosLike } from "@/lib/kudos/mutations";
 import type { KudosCard as KudosCardModel } from "@/lib/kudos/types";
@@ -60,6 +62,13 @@ export function KudosDetailPageClient({ card: initialCard }: KudosDetailPageClie
 
   return (
     <div className="w-full max-w-2xl">
+      <Link
+        href="/kudos"
+        aria-label={t("detail.backAriaLabel")}
+        className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-details-textbutton-normal text-details-text-secondary-1"
+      >
+        <ChevronLeftIcon />
+      </Link>
       <KudosCard
         card={cardData}
         contentLines={5}

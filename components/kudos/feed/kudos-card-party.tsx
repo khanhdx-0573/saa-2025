@@ -33,15 +33,15 @@ export function KudosCardParty({ profile, isAnonymous, anonymousDisplayName, onO
 
   if (isAnonymous) {
     return (
-      <div className="flex w-full flex-col items-center gap-3 text-center lg:w-[235px]">
-        <span className="flex size-16 shrink-0 items-center justify-center rounded-full border-2 border-details-text-secondary-1 bg-details-background text-details-text-secondary-1">
+      <div className="flex w-full min-w-0 flex-col items-center gap-2 text-center sm:gap-3 lg:w-[235px]">
+        <span className="flex size-12 shrink-0 items-center justify-center rounded-full border-2 border-details-text-secondary-1 bg-details-background text-details-text-secondary-1 sm:size-16">
           <IncognitoIcon />
         </span>
         <div className="flex flex-col items-center gap-0.5">
-          <span className="font-montserrat text-base font-bold text-details-text-primary-2">
+          <span className="break-words font-montserrat text-sm font-bold text-details-text-primary-2 sm:text-base">
             {anonymousDisplayName ?? t("party.anonymousFallbackName")}
           </span>
-          <span className="font-montserrat text-sm font-bold text-details-text-secondary-2">
+          <span className="break-words font-montserrat text-xs font-bold text-details-text-secondary-2 sm:text-sm">
             {t("party.anonymousSenderLabel")}
           </span>
         </div>
@@ -52,7 +52,7 @@ export function KudosCardParty({ profile, isAnonymous, anonymousDisplayName, onO
   if (!profile) return null;
 
   return (
-    <div className="flex w-full flex-col items-center gap-3 text-center lg:w-[235px]">
+    <div className="flex w-full flex-col items-center gap-2 text-center sm:gap-3 lg:w-[235px]">
       <button
         type="button"
         onClick={() => onOpenProfile?.(profile.id)}
@@ -65,10 +65,10 @@ export function KudosCardParty({ profile, isAnonymous, anonymousDisplayName, onO
             alt=""
             width={64}
             height={64}
-            className="size-16 rounded-full border-2 border-details-text-secondary-1 object-cover"
+            className="size-12 rounded-full border-2 border-details-text-secondary-1 object-cover sm:size-16"
           />
         ) : (
-          <span className="flex size-16 items-center justify-center rounded-full border-2 border-details-text-secondary-1 bg-details-textbutton-normal text-details-text-secondary-2">
+          <span className="flex size-12 items-center justify-center rounded-full border-2 border-details-text-secondary-1 bg-details-textbutton-normal text-details-text-secondary-2 sm:size-16">
             <PersonIcon />
           </span>
         )}
@@ -77,12 +77,12 @@ export function KudosCardParty({ profile, isAnonymous, anonymousDisplayName, onO
         <button
           type="button"
           onClick={() => onOpenProfile?.(profile.id)}
-          className="font-montserrat text-base font-bold text-details-text-primary-2 hover:underline"
+          className="break-words font-montserrat text-sm font-bold text-details-text-primary-2 hover:underline sm:text-base"
         >
           {profile.fullName}
         </button>
-        <div className="flex items-center gap-2">
-          <span className="font-montserrat text-sm font-bold text-details-text-secondary-2">
+        <div className="flex min-w-0 items-center gap-2">
+          <span className="break-words font-montserrat text-xs font-bold text-details-text-secondary-2 sm:text-sm">
             {profile.department}
           </span>
           <StarBadge stars={profile.starRating} />

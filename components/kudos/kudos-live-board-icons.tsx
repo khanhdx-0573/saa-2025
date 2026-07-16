@@ -62,6 +62,21 @@ export function ChevronRightIcon({ className }: { className?: string }) {
   );
 }
 
+/** Left-pointing chevron — mirror of `ChevronRightIcon`, back-navigation affordance. */
+export function ChevronLeftIcon({ className }: { className?: string }) {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" className={className}>
+      <path
+        d="M14.5 5.5L8 12L14.5 18.5"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 /** Incognito/mask glyph — anonymous sender avatar placeholder. */
 export function IncognitoIcon({ className }: { className?: string }) {
   return (

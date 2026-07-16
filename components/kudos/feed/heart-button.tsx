@@ -23,7 +23,7 @@ export function HeartButton({ count, liked, disabled, onToggle }: HeartButtonPro
       aria-pressed={liked}
       aria-label={liked ? t("heart.unlike") : t("heart.like")}
       onClick={onToggle}
-      className={`flex items-center gap-1 font-montserrat text-2xl font-bold leading-8 text-details-text-primary-2 disabled:cursor-not-allowed disabled:opacity-60 ${
+      className={`flex items-center gap-1 font-montserrat text-lg font-bold leading-7 text-details-text-primary-2 disabled:cursor-not-allowed disabled:opacity-60 sm:text-2xl sm:leading-8 ${
         disabled ? "" : "cursor-pointer"
       }`}
     >

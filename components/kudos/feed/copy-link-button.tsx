@@ -27,7 +27,7 @@ export function CopyLinkButton({ url }: CopyLinkButtonProps) {
     <button
       type="button"
       onClick={handleCopy}
-      className="flex shrink-0 cursor-pointer items-center gap-1 rounded px-4 py-4 font-montserrat text-base font-bold text-details-text-primary-2 hover:bg-details-textbutton-normal"
+      className="flex shrink-0 cursor-pointer items-center gap-1 rounded px-2 py-2 font-montserrat text-sm font-bold text-details-text-primary-2 hover:bg-details-textbutton-normal sm:px-4 sm:py-4 sm:text-base"
     >
       {t("copyLink.button")}
       <LinkIcon />

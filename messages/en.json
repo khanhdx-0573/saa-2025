@@ -119,6 +119,9 @@
       "statsReceived": "Kudos received",
       "statsSent": "Kudos sent",
       "statsHearts": "Hearts received"
+    },
+    "detail": {
+      "backAriaLabel": "Back to Kudos"
     }
   },
   "KudosModal": {

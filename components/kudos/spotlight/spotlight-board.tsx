@@ -14,6 +14,17 @@ import { SpotlightActivityTicker } from "./spotlight-activity-ticker";
 import { SpotlightWordCloud } from "./spotlight-word-cloud";
 import type { SpotlightActivityItem } from "./spotlight-activity-ticker";
 
+/** Matches Tailwind's `lg` breakpoint — below this, the canvas container is
+ *  either 300px (base) or 400px (`sm:`) tall (see the
+ *  `h-[300px] sm:h-[400px] lg:h-[548px]` container below), never the full
+ *  548px the SVG's fixed 1157×548 viewBox is drawn for — both tiers scale the
+ *  canvas down enough that names read as illegibly tiny, not just the base tier. */
+const MOBILE_BREAKPOINT_PX = 1024;
+/** Boosts `MIN_FONT_SIZE`/`MAX_FONT_SIZE` uniformly below `MOBILE_BREAKPOINT_PX`,
+ *  feeding into BOTH the collision layout and the rendered text (see
+ *  `computeSpotlightLayout`'s `fontScale` param), so spacing stays correct. */
+const MOBILE_FONT_SCALE = 1.5;
+
 export type SpotlightData = {
   totalKudos: number;
   nodes: SpotlightLayoutNode[];
@@ -47,12 +58,28 @@ export function SpotlightBoard({ data, loading = false, onOpenDetail }: Spotligh
   const containerRef = useRef<HTMLDivElement>(null);
   const panZoom = usePanZoom();
 
+  // Responsive: track viewport width so the word-cloud can boost its font
+  // scale on mobile (see `MOBILE_FONT_SCALE`) — mirrors the same
+  // matchMedia + state pattern `highlight-carousel.tsx` uses.
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT_PX - 1}px)`);
+    setIsMobile(mq.matches);
+    const handler = (event: MediaQueryListEvent) => setIsMobile(event.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
   // Above MAX_STATIC_NODES, `beltWidth` grows past CANVAS_WIDTH and the
   // word-cloud switches to a continuously scrolling belt (see
   // `use-belt-scroll.ts`) instead of cramming every recipient into the same
   // fixed area — density per node stays constant either way.
   const beltWidth = useMemo(() => computeBeltWidth(data.nodes.length), [data.nodes.length]);
-  const positioned = useMemo(() => computeSpotlightLayout(data.nodes, beltWidth), [data.nodes, beltWidth]);
+  const fontScale = isMobile ? MOBILE_FONT_SCALE : 1;
+  const positioned = useMemo(
+    () => computeSpotlightLayout(data.nodes, beltWidth, fontScale),
+    [data.nodes, beltWidth, fontScale]
+  );
   const scrolling = beltWidth > CANVAS_WIDTH;
   // Paused while a tooltip is open — chasing a moving name to click it is bad UX.
   const { offset: beltOffset, elapsedSeconds } = useBeltScroll(beltWidth, hover !== null);
@@ -167,7 +194,11 @@ export function SpotlightBoard({ data, loading = false, onOpenDetail }: Spotligh
             className="w-24 bg-transparent font-montserrat text-sm text-details-text-secondary-1 placeholder:text-details-text-secondary-2 focus:outline-none sm:w-40"
           />
         </div>
-        <p className="absolute left-1/2 top-4 z-20 -translate-x-1/2 font-montserrat text-xl font-bold leading-tight text-details-text-secondary-1 sm:top-6 sm:text-2xl lg:text-[36px] lg:leading-[44px]">
+        {/* fix-bug: mobile positions this top-right (mirroring the search
+           pill's `left-3`) instead of centered — centered collided with the
+           search pill, which alone spans past the container's horizontal
+           center on narrow viewports. */}
+        <p className="absolute right-3 top-4 z-20 font-montserrat text-base font-bold leading-tight text-details-text-secondary-1 sm:left-1/2 sm:right-auto sm:top-6 sm:-translate-x-1/2 sm:text-2xl lg:text-[36px] lg:leading-[44px]">
           {t("spotlight.totalLabel", { count: data.totalKudos })}
         </p>
 

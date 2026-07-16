@@ -5,6 +5,9 @@ import { useTranslations } from "next-intl";
 import { CloseIcon } from "@/components/kudos/kudos-icons";
 
 const MAX_VISIBLE_IMAGES = 5;
+/** Mobile shows fewer thumbnails at once so each stays a legible size on a
+ *  narrow card; the last mobile slot gets a "+N" overlay for the rest. */
+const MOBILE_VISIBLE_IMAGES = 3;
 
 type KudosImage = {
   path: string;
@@ -52,19 +55,27 @@ export function KudosImageGallery({ images }: KudosImageGalleryProps) {
 
   return (
     <>
-      <div className="flex w-full items-center gap-4">
-        {visible.map((image, index) => (
-          <button
-            key={image.path}
-            type="button"
-            onClick={() => setActiveIndex(index)}
-            aria-label={t("images.viewImage", { index: index + 1 })}
-            className="aspect-square w-full max-w-28 flex-1 overflow-hidden rounded-xl border border-details-border"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element -- external Supabase Storage host, not in next.config images allowlist */}
-            <img src={image.url} alt="" className="h-full w-full object-cover" />
-          </button>
-        ))}
+      <div className="flex w-full items-center gap-2 sm:gap-4">
+        {visible.map((image, index) => {
+          const isMobileOverflowSlot = index === MOBILE_VISIBLE_IMAGES - 1 && visible.length > MOBILE_VISIBLE_IMAGES;
+          return (
+            <button
+              key={image.path}
+              type="button"
+              onClick={() => setActiveIndex(index)}
+              aria-label={t("images.viewImage", { index: index + 1 })}
+              className={`relative aspect-square w-full max-w-20 flex-1 overflow-hidden rounded-xl border border-details-border sm:max-w-28 ${index >= MOBILE_VISIBLE_IMAGES ? "hidden sm:block" : ""}`}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element -- external Supabase Storage host, not in next.config images allowlist */}
+              <img src={image.url} alt="" className="h-full w-full object-cover" />
+              {isMobileOverflowSlot && (
+                <span className="absolute inset-0 flex items-center justify-center bg-details-header-overlay font-montserrat text-sm font-bold text-details-text-secondary-1 sm:hidden">
+                  +{visible.length - MOBILE_VISIBLE_IMAGES}
+                </span>
+              )}
+            </button>
+          );
+        })}
       </div>
       <dialog
         ref={dialogRef}

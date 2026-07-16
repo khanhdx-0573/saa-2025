@@ -54,10 +54,10 @@ export function SpotlightActivityTicker({ activity }: SpotlightActivityTickerPro
              for "{name} đã nhận được một Kudos mới" (Tailwind's `text-sm
              leading-5` and `text-base leading-6` happen to match 14/20 and
              16/24 exactly). */}
-          <span className="font-montserrat text-[10px] font-bold tracking-[0.1px] sm:text-sm">
+          <span className="font-montserrat text-[9px] font-bold tracking-[0.1px] sm:text-sm">
             {formatTickerTime(item.receivedAt)}
           </span>{" "}
-          <span className="font-montserrat text-[11px] font-bold tracking-[0.15px] sm:text-base">
+          <span className="font-montserrat text-[10px] font-bold tracking-[0.15px] sm:text-base">
             {t("spotlight.activityNotice", { name: item.fullName })}
           </span>
         </p>
