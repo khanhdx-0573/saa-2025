@@ -1,3 +1,0 @@
-ƒeƒXƒgŠÖ”
-def hello():
-    pass
