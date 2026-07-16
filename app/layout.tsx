@@ -3,8 +3,8 @@ import { NextIntlClientProvider } from "next-intl";
 import { getLocale } from "next-intl/server";
 import { montserrat, montserratAlternates } from "@/lib/fonts";
 import { createClient } from "@/lib/supabase/server";
+import { Toaster } from "sonner";
 import { AuthProvider, type AuthUser } from "@/components/auth/auth-provider";
-import { ToastProvider } from "@/components/ui/toast";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -39,10 +39,22 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
+        {/* Rendered BEFORE {children} on purpose: React fires mount effects in
+           tree order (a subtree's effects all run before the next sibling's),
+           so a `<Toaster/>` placed after {children} would still be
+           subscribing to sonner's store *after* something deep inside
+           {children} (e.g. LoginToastListener, whose effect fires on the very
+           first paint) already called `toast.success()` — that call landed
+           with nobody listening yet and silently vanished. */}
+        <Toaster
+          position="bottom-left"
+          theme="dark"
+          richColors
+          duration={3000}
+          toastOptions={{ classNames: { toast: "font-montserrat" } }}
+        />
         <NextIntlClientProvider>
-          <AuthProvider initialUser={initialUser}>
-            <ToastProvider>{children}</ToastProvider>
-          </AuthProvider>
+          <AuthProvider initialUser={initialUser}>{children}</AuthProvider>
         </NextIntlClientProvider>
       </body>
     </html>

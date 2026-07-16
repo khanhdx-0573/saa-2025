@@ -4,6 +4,7 @@
 - **Ngôn ngữ:** TypeScript (Strict mode)
 - **Giao diện (Styling):** Tailwind CSS v4
 - **Backend & Database:** Supabase (PostgreSQL, Auth, Storage)
+- **Hosting:** Vercel
 - **Đa ngôn ngữ (i18n):** next-intl
 - **Soạn thảo văn bản (Rich Text Editor):** Tiptap
 - **Kiểm thử (Testing):** Vitest + Testing Library (Unit Test) và Playwright (E2E Test)
@@ -74,3 +75,122 @@ npm run test:e2e
 - `npm run build`: Đóng gói (build) dự án sẵn sàng cho production.
 - `npm run start`: Chạy ứng dụng từ bản build production.
 - `npm run lint`: Chạy ESLint để kiểm tra và phát hiện lỗi cú pháp, style code.
+
+---
+
+## 🚀 Deploy (Supabase Local → Cloud)
+
+### 1. Tạo project trên Supabase Cloud
+
+1. Vào https://supabase.com/dashboard → **New Project**.
+2. Chọn Organization → đặt tên project → tạo database password (lưu lại, dùng ở bước link) → chọn Region (gần user thật nhất, ví dụ Singapore) → **Create new project**.
+3. Đợi 1–2 phút để project khởi tạo.
+
+### 2. Lấy project ref
+
+- Nhìn trên URL dashboard: `https://supabase.com/dashboard/project/<ref>` → chuỗi 20 ký tự đó là ref.
+- Hoặc: Settings → General → **Reference ID**.
+
+### 3. Link local project với cloud
+
+```bash
+supabase link --project-ref <ref>
+```
+Nhập database password đã tạo ở bước 1 khi được hỏi.
+
+### 4. Đẩy schema + RLS + bucket (nếu tạo qua migration) lên cloud
+
+```bash
+supabase db push
+```
+- Đẩy toàn bộ file trong `supabase/migrations` lên cloud (bảng, RLS policy, function, trigger).
+- Muốn xem trước thay đổi trước khi áp dụng: thêm `--dry-run`.
+
+**Seed dữ liệu mẫu lên cloud (tùy chọn, dùng để demo):**
+
+```bash
+supabase db push --include-seed
+```
+- Chạy thêm `supabase/seed.sql` (đã cấu hình trong `config.toml` → `[db.seed]`) lên remote DB, ngay sau khi đẩy migrations.
+- File `seed.sql` dùng `on conflict do nothing` nên chạy lại nhiều lần không tạo trùng lặp.
+- Dữ liệu trong `seed.sql` là data giả (`@seed.local`) để demo — không seed lên cloud production thật có user thật.
+
+### 5. Cấu hình Site URL / Redirect URLs (bắt buộc nếu có Auth/login)
+
+Dashboard cloud → **Authentication → URL Configuration**:
+- **Site URL**: `https://yourapp.com` (domain production thật)
+- **Redirect URLs**: thêm `https://yourapp.com/**`
+
+### 6. Cấu hình Google OAuth (nếu dùng login Google)
+
+**Bên Google Cloud Console** (APIs & Services → Credentials → chọn OAuth Client đang dùng cho local):
+- Thêm vào **Authorized redirect URIs**: `https://<ref>.supabase.co/auth/v1/callback`
+- Thêm vào **Authorized JavaScript origins**: `https://yourapp.com`
+- Không cần tạo Client mới — dùng chung 1 client cho cả local và cloud, chỉ thêm URL.
+
+**Bên Supabase Dashboard cloud** → Authentication → Providers → Google:
+- Dán đúng Client ID + Client Secret (giống hệt trong `.env` local) → Enable → Save.
+
+### 7. Storage buckets (chỉ nếu bucket được tạo TAY ở local, không qua migration)
+
+Dashboard cloud → Storage → **New Bucket** → tạo lại đúng tên, đúng chế độ public/private như local.
+(Nếu bucket được tạo bằng SQL trong migration thì bước 4 đã lo rồi, bỏ qua.)
+
+### 8. Edge Functions (nếu project có dùng)
+
+```bash
+supabase functions deploy <tên-function>
+supabase secrets set --env-file .env.production
+```
+Không dùng Edge Function thì bỏ qua bước này.
+
+### 9. Lấy API keys cho cloud
+
+Dashboard cloud → Settings → API:
+- **Project URL**
+- **Publishable key** (anon/public key)
+
+### 10. Cập nhật env cho Next.js app
+
+```dotenv
+NEXT_PUBLIC_SUPABASE_URL=https://<ref>.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=<publishable-key-vừa-lấy>
+```
+Set biến này trên nơi bạn deploy Next.js (Vercel Environment Variables, hoặc `.env.production` nếu tự host).
+
+### 11. Deploy Next.js app
+
+Deploy như bình thường (Vercel, self-host, v.v). Sau khi deploy, test lại:
+- Load trang, query data (kiểm tra RLS không chặn nhầm)
+- Login Google (kiểm tra redirect không lỗi)
+- Upload/xem file nếu có dùng storage
+
+### Lưu ý về `config.toml`
+
+- File này mặc định **chỉ ảnh hưởng local** (`supabase start`), không tự áp dụng lên cloud.
+- Riêng mục `[auth]` (site_url, redirect urls, OAuth providers...) *có thể* đẩy lên cloud bằng `supabase config push`, nhưng dễ ghi đè nhầm site_url cloud thành `localhost` nếu không tách config theo môi trường — nên với project nhỏ, **set tay trên Dashboard (bước 5, 6) là cách an toàn và đơn giản hơn**.
+
+### Việc chỉ cần làm 1 lần
+
+Bước 1, 2, 5, 6, 9 chỉ làm 1 lần lúc setup ban đầu. Từ lần deploy sau, mỗi khi code có migration mới, chỉ cần lặp lại bước 4 (`supabase db push`).
+
+---
+
+## 🌐 Deploy Ứng Dụng (Vercel)
+
+> App được host trên Vercel, tự động build lại mỗi khi có thay đổi trên GitHub. Phần dưới đây bổ sung chi tiết cho bước 11 (Deploy Next.js app) ở checklist Supabase phía trên — làm sau khi đã hoàn tất checklist đó.
+
+### 1. Cơ chế build tự động
+
+- Push lên nhánh `main` → build và deploy thẳng lên **Production**.
+- Mở Pull Request → Vercel tự tạo **Preview Deployment** riêng cho PR đó để review trước khi merge.
+
+### 2. Biến môi trường
+
+Vercel Dashboard → **Settings → Environment Variables** → điền 2 biến đã lấy ở bước 9–10 của checklist Supabase phía trên (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`).
+
+### 3. Domain riêng (Custom Domain)
+
+- Domain: `app.yourapp.com`
+- DNS: quản lý qua Route 53 → trỏ CNAME `app` về hostname mà Vercel cấp khi add domain.
+- Environment gán cho domain: **Production**.

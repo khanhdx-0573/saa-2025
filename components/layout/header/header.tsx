@@ -5,7 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 import { useAuth } from "@/components/auth/auth-provider";
+import { LoginToastListener } from "@/components/auth/login-toast-listener";
 import { createClient } from "@/lib/supabase/client";
 import { LanguageSwitcher } from "@/components/ui/language-switcher";
 import { BellIcon, CloseIcon, HamburgerIcon, ProfileFilledIcon, ChevronRightIcon, LogoutIcon } from "@/components/layout/header/header-icons";
@@ -61,6 +63,7 @@ export function Header() {
     setMobileMenuOpen(false);
     const supabase = createClient();
     await supabase.auth.signOut();
+    toast.success(t("logoutSuccess"));
     router.push("/login");
   }
 
@@ -84,6 +87,7 @@ export function Header() {
 
   return (
     <div ref={mobileMenuRef}>
+      <LoginToastListener />
       <header className="flex w-full items-center justify-between bg-details-header-overlay px-6 py-3 lg:px-36">
         <div className="flex items-center gap-10 xl:gap-16">
           <Link href="/about-saa-2025" className="shrink-0">
@@ -98,7 +102,7 @@ export function Header() {
           {/* Desktop nav — hidden below xl (iPad Pro's 1024px lg: breakpoint
              left `Giới thiệu SAA 2025` wrapping to 2 lines; deferred to xl:
              1280px, same fix pattern as kudos-page-client.tsx's sidebar) */}
-          <nav className="hidden items-center gap-8 xl:flex">
+          <nav className="hidden items-center gap-8 xl:flex" aria-label="Desktop navigation">
             {NAV_ITEMS.map((item) => {
               const active = item.isActive(pathname);
               return (

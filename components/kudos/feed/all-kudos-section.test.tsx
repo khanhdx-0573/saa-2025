@@ -18,7 +18,7 @@ vi.mock("./kudos-card", () => ({
   KudosCard: ({ card }: { card: KudosCardData }) => <div data-testid="kudos-card-stub">{card.title}</div>,
 }));
 
-vi.mock("./kudos-edit-modal", () => ({
+vi.mock("@/components/kudos/compose/kudos-edit-modal", () => ({
   KudosEditModal: () => null,
 }));
 

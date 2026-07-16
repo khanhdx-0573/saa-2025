@@ -1,6 +1,14 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { Header } from "./header";
+
+/** Header renders both desktop and mobile nav links in the DOM at once
+ *  (visibility is CSS-media-query only — jsdom doesn't apply it), so a plain
+ *  `getByRole("link", {name})` matches both. Scope to the desktop `<nav>`
+ *  (uniquely labeled) to disambiguate. */
+function desktopNav() {
+  return within(screen.getByRole("navigation", { name: "Desktop navigation" }));
+}
 
 const mockUseAuth = vi.fn();
 vi.mock("@/components/auth/auth-provider", () => ({
@@ -10,6 +18,7 @@ vi.mock("@/components/auth/auth-provider", () => ({
 const mockUsePathname = vi.fn();
 vi.mock("next/navigation", () => ({
   usePathname: () => mockUsePathname(),
+  useRouter: () => ({ push: vi.fn() }),
 }));
 
 vi.mock("next-intl", () => ({
@@ -51,9 +60,9 @@ describe("Header", () => {
 
       render(<Header />);
 
-      const kudosLink = screen.getByRole("link", { name: "navKudos" });
-      const aboutLink = screen.getByRole("link", { name: "navAboutSaa" });
-      const awardLink = screen.getByRole("link", { name: "navAwardInfo" });
+      const kudosLink = desktopNav().getByRole("link", { name: "navKudos" });
+      const aboutLink = desktopNav().getByRole("link", { name: "navAboutSaa" });
+      const awardLink = desktopNav().getByRole("link", { name: "navAwardInfo" });
 
       expect(kudosLink.getAttribute("href")).toBe("/kudos");
       expect(aboutLink.getAttribute("href")).toBe("/about-saa-2025");
@@ -67,7 +76,9 @@ describe("Header", () => {
       expect(profileDropdown.getAttribute("data-user-id")).toBe("user-123");
 
       expect(screen.getByTestId("header-bell")).toBeTruthy();
-      expect(screen.getByTestId("language-switcher-stub")).toBeTruthy();
+      // Rendered once for the desktop cluster and once for the mobile cluster
+      // (visibility is CSS-media-query only) — assert presence, not count.
+      expect(screen.getAllByTestId("language-switcher-stub").length).toBeGreaterThan(0);
     });
 
     it.each([
@@ -83,7 +94,7 @@ describe("Header", () => {
 
       const allKeys = ["navKudos", "navAboutSaa", "navAwardInfo"];
       for (const key of allKeys) {
-        const link = screen.getByRole("link", { name: key });
+        const link = desktopNav().getByRole("link", { name: key });
         expect(link.getAttribute("aria-current")).toBe(key === activeKey ? "page" : null);
       }
     });
@@ -95,7 +106,7 @@ describe("Header", () => {
       render(<Header />);
 
       for (const key of ["navKudos", "navAboutSaa", "navAwardInfo"]) {
-        expect(screen.getByRole("link", { name: key }).getAttribute("aria-current")).toBeNull();
+        expect(desktopNav().getByRole("link", { name: key }).getAttribute("aria-current")).toBeNull();
       }
     });
 

@@ -1,8 +1,8 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 import { LinkIcon } from "@/components/kudos/kudos-icons";
-import { useToast } from "@/components/ui/toast";
 
 type CopyLinkButtonProps = {
   url: string;
@@ -12,14 +12,13 @@ type CopyLinkButtonProps = {
  *  fails silently if the Clipboard API is unavailable or denied). */
 export function CopyLinkButton({ url }: CopyLinkButtonProps) {
   const t = useTranslations("KudosLiveBoard");
-  const { show } = useToast();
 
   async function handleCopy() {
     try {
       await navigator.clipboard.writeText(url);
-      show(t("copyLink.success"));
+      toast.success(t("copyLink.success"));
     } catch {
-      show(t("copyLink.error"));
+      toast.error(t("copyLink.error"));
     }
   }
 

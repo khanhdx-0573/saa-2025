@@ -113,6 +113,19 @@ test.describe("Site navigation — authenticated", () => {
     await expect(page.getByRole("link", { name: "Thông tin giải thưởng" })).not.toHaveAttribute("aria-current", "page");
     await expect(page.getByRole("link", { name: "Sun* Kudos" })).not.toHaveAttribute("aria-current", "page");
   });
+
+  test("an already-signed-in user hitting /login is bounced away, never shown the login screen", async ({ page }) => {
+    await page.goto("/kudos");
+    await page.waitForURL(/\/kudos$/, { timeout: 15_000 });
+
+    await page.goto("/login");
+    await page.waitForURL((url) => !url.pathname.startsWith("/login"), { timeout: 15_000 });
+
+    expect(page.url()).not.toContain("/login");
+    // The authenticated header (nav tabs visible) proves we actually landed
+    // on an app page rather than a still-rendering /login shell.
+    await expect(page.getByRole("link", { name: "Sun* Kudos" })).toBeVisible();
+  });
 });
 
 test.describe("Site navigation — unauthenticated", () => {
