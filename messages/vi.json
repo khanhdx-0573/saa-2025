@@ -119,6 +119,9 @@
       "statsReceived": "Kudos đã nhận",
       "statsSent": "Kudos đã gửi",
       "statsHearts": "Lượt tim nhận được"
+    },
+    "detail": {
+      "backAriaLabel": "Quay lại trang Kudos"
     }
   },
   "KudosModal": {

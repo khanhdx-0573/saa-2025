@@ -98,10 +98,10 @@ export function nameBoxSize(fullName: string, fontSize: number): { width: number
   };
 }
 
-function fontSizeFor(sentCount: number, min: number, max: number): number {
-  if (max === min) return MIN_FONT_SIZE;
+function fontSizeFor(sentCount: number, min: number, max: number, fontScale: number): number {
+  if (max === min) return MIN_FONT_SIZE * fontScale;
   const t = (sentCount - min) / (max - min);
-  return MIN_FONT_SIZE + t * (MAX_FONT_SIZE - MIN_FONT_SIZE);
+  return (MIN_FONT_SIZE + t * (MAX_FONT_SIZE - MIN_FONT_SIZE)) * fontScale;
 }
 
 /** Rows/cols for a grid holding at least `nodeCount * CELL_SLACK_FACTOR` cells, shaped to the usable area's aspect ratio. */
@@ -120,10 +120,16 @@ function gridDimensions(nodeCount: number, usableWidth: number, usableHeight: nu
  * @param canvasWidth Defaults to `CANVAS_WIDTH` (static layout). Pass a wider
  * value (see `computeBeltWidth`) for scrolling mode; the belt only ever grows
  * horizontally, `CANVAS_HEIGHT` never changes.
+ * @param fontScale Multiplies `MIN_FONT_SIZE`/`MAX_FONT_SIZE` uniformly.
+ * Collision boxes (`nameBoxSize`) are derived from the SAME scaled font size,
+ * so bumping this for mobile (where the SVG canvas gets scaled down further
+ * by the narrower container) keeps names legible without desyncing layout
+ * spacing from what's actually rendered.
  */
 export function computeSpotlightLayout(
   nodes: SpotlightLayoutNode[],
-  canvasWidth: number = CANVAS_WIDTH
+  canvasWidth: number = CANVAS_WIDTH,
+  fontScale: number = 1
 ): PositionedSpotlightNode[] {
   if (nodes.length === 0) return [];
 
@@ -163,7 +169,7 @@ export function computeSpotlightLayout(
 
   // Candidate box per node: grid cell center + jitter, sized from its own font/name.
   const candidates = nodes.map((node) => {
-    const fontSize = fontSizeFor(node.sentCount, minCount, maxCount);
+    const fontSize = fontSizeFor(node.sentCount, minCount, maxCount, fontScale);
     const cellIndex = cellIndexBySenderId.get(node.senderId)!;
     const row = Math.floor(cellIndex / cols);
     const col = cellIndex % cols;

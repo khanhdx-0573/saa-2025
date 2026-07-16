@@ -114,7 +114,7 @@ export function KudosModal({ open, onClose }: KudosModalProps) {
            typical screens. Proportions/hierarchy stay the same, just at a
            smaller scale. */}
         <div className="m-auto flex w-[680px] max-w-full flex-col gap-4 rounded-2xl bg-details-modal-background p-4 sm:gap-5 sm:rounded-3xl sm:p-7">
-          <h2 className="whitespace-pre-line text-center font-montserrat text-xl font-bold leading-7 text-details-text-primary-2 sm:text-[26px] sm:leading-9">
+          <h2 className="whitespace-pre-line text-center font-montserrat text-base font-bold leading-6 text-details-text-primary-2 sm:text-[26px] sm:leading-9">
             {t("title")}
           </h2>
           <RecipientField value={form.recipient} onChange={form.setRecipient} excludeUserId={user?.id} />

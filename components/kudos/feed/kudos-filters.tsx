@@ -151,7 +151,11 @@ export function KudosFilters({ value, hashtags, departments, onChange }: KudosFi
   }
 
   return (
-    <div ref={containerRef} className="flex w-full items-center gap-2 sm:w-auto">
+    // fix-bug: without `lg:shrink-0`, this wrapper's default flex-shrink:1
+    // let the sibling "HIGHLIGHT KUDOS" heading (lg:text-[57px]) squeeze it
+    // below its own buttons' natural width, wrapping "Phòng ban" to 2 lines
+    // even though each FilterDropdown button is itself `sm:flex-none`.
+    <div ref={containerRef} className="flex w-full items-center gap-2 sm:w-auto lg:shrink-0">
       <FilterDropdown
         label={t("filters.hashtagLabel")}
         selectedLabel={selectedHashtag ? `#${selectedHashtag.name}` : allOptionLabel}

@@ -111,6 +111,24 @@ describe("computeSpotlightLayout", () => {
     expect(positioned.every((node) => node.fontSize === MIN_FONT_SIZE)).toBe(true);
   });
 
+  it("multiplies both font-size bounds by fontScale (mobile legibility boost)", () => {
+    const nodes = [makeNode({ senderId: "a", sentCount: 0 }), makeNode({ senderId: "b", sentCount: 100 })];
+
+    const positioned = computeSpotlightLayout(nodes, undefined, 1.3);
+    const low = positioned.find((node) => node.senderId === "a");
+    const high = positioned.find((node) => node.senderId === "b");
+
+    expect(low?.fontSize).toBeCloseTo(MIN_FONT_SIZE * 1.3);
+    expect(high?.fontSize).toBeCloseTo(MAX_FONT_SIZE * 1.3);
+  });
+
+  it("defaults fontScale to 1 (no change) when omitted", () => {
+    const nodes = [makeNode({ senderId: "a", sentCount: 0 })];
+
+    const positioned = computeSpotlightLayout(nodes);
+    expect(positioned[0].fontSize).toBe(MIN_FONT_SIZE);
+  });
+
   it("produces the same per-sender position regardless of the input array's order", () => {
     const a = makeNode({ senderId: "a", sentCount: 30 });
     const b = makeNode({ senderId: "b", sentCount: 30 });

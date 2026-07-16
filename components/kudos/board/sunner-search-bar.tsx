@@ -50,7 +50,13 @@ export function SunnerSearchBar() {
   }
 
   return (
-    <div className="relative w-full sm:max-w-[420px]">
+    // fix-bug: a flat `sm:max-w-[420px]` left too little room for the
+    // sibling ComposeEntryBar's (flex-1) placeholder text at tablet widths
+    // (e.g. iPad Pro 1024px), forcing it to wrap 3 lines. Scale the cap down
+    // at narrower breakpoints so the entry bar keeps enough width to stay at
+    // 1-2 lines; the full 420px design width only applies once xl: (1280px)
+    // guarantees the entry bar has room to spare.
+    <div className="relative w-full sm:max-w-[340px] lg:max-w-[380px] xl:max-w-[420px]">
       <div className="flex h-14 w-full items-center gap-3 rounded-full border border-details-border bg-details-textbutton-normal px-4 sm:h-[72px] sm:gap-4 sm:px-6">
         <SearchIcon size={20} />
         <input
@@ -74,7 +80,7 @@ export function SunnerSearchBar() {
         <ul
           id="sunner-search-listbox"
           role="listbox"
-          className="absolute z-20 mt-2 flex max-h-80 w-full flex-col gap-0.5 overflow-y-auto rounded-lg border border-details-border bg-details-background p-1.5 shadow-lg"
+          className="scrollbar-thin absolute z-20 mt-2 flex max-h-80 w-full flex-col gap-0.5 overflow-y-auto rounded-lg border border-details-border bg-details-background p-1.5 shadow-lg"
         >
           {results.map((profile) => (
             <li key={profile.id} role="option" aria-selected={false}>

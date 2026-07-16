@@ -36,7 +36,7 @@ export function TitleField({ value, onChange }: TitleFieldProps) {
           onChange={(event) => onChange(event.target.value)}
           maxLength={MAX_KUDOS_TITLE_CHARS}
           placeholder={t("titlePlaceholder")}
-          className="h-11 flex-1 rounded-lg border border-details-border bg-details-text-secondary-1 px-4 font-montserrat text-sm font-bold text-details-text-primary-2 placeholder:text-details-text-secondary-2 focus:outline-none sm:h-12 sm:px-5"
+          className="h-11 w-full rounded-lg border border-details-border bg-details-text-secondary-1 px-4 font-montserrat text-sm font-bold text-details-text-primary-2 placeholder:text-details-text-secondary-2 focus:outline-none sm:h-12 sm:w-auto sm:flex-1 sm:px-5"
         />
       </div>
       <div className="hidden items-start gap-4 sm:flex">

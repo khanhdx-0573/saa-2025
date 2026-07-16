@@ -29,10 +29,10 @@ export function AnonymousToggle({ isAnonymous, onToggle, name, onNameChange }: A
         {t("anonymousLabel")}
       </label>
       {isAnonymous && (
-        <div className="flex flex-1 items-center gap-4">
+        <div className="flex flex-1 flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
           <label
             htmlFor="kudos-anonymous-name-input"
-            className="w-fit shrink-0 whitespace-nowrap font-montserrat text-lg font-bold text-details-text-primary-2"
+            className="font-montserrat text-lg font-bold text-details-text-primary-2 sm:w-fit sm:shrink-0 sm:whitespace-nowrap"
           >
             {t("anonymousNameLabel")}{" "}
             <span className="text-details-required-mark" aria-hidden="true">
@@ -45,7 +45,7 @@ export function AnonymousToggle({ isAnonymous, onToggle, name, onNameChange }: A
             value={name}
             onChange={(event) => onNameChange(event.target.value)}
             placeholder={t("anonymousNamePlaceholder")}
-            className="h-12 flex-1 rounded-lg border border-details-border bg-details-text-secondary-1 px-5 font-montserrat text-sm font-bold text-details-text-primary-2 placeholder:text-details-text-secondary-2 focus:outline-none"
+            className="h-11 w-full rounded-lg border border-details-border bg-details-text-secondary-1 px-5 font-montserrat text-sm font-bold text-details-text-primary-2 placeholder:text-details-text-secondary-2 focus:outline-none sm:h-12 sm:w-auto sm:flex-1"
           />
         </div>
       )}
