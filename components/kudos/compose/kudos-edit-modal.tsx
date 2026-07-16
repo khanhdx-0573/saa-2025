@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 import { HashtagField } from "@/components/kudos/compose/hashtag-field";
 import { CloseIcon, SendIcon } from "@/components/kudos/kudos-icons";
 import { KudosEditor } from "@/components/kudos/compose/kudos-editor";
@@ -125,6 +126,7 @@ export function KudosEditModal({ kudosId, onClose, onSaved }: KudosEditModalProp
       const updated = await updateKudos({ kudosId, title, content, hashtagIds, imagePaths });
       onSaved(updated);
       dialogRef.current?.close();
+      toast.success(t("saveSuccess"));
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : t("submitErrorFallback"));
     } finally {

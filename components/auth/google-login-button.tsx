@@ -27,7 +27,7 @@ export function GoogleLoginButton() {
       <button
         type="button"
         onClick={handleLogin}
-        className="flex shrink-0 items-center gap-2 overflow-clip rounded-lg bg-details-text-primary-1 px-6 py-4"
+        className="flex shrink-0 cursor-pointer items-center gap-2 overflow-clip rounded-lg bg-details-text-primary-1 px-6 py-4 transition-opacity hover:opacity-90"
       >
         <span className="font-montserrat text-[22px] font-bold leading-7 text-details-text-primary-2">
           {t("googleButton")}

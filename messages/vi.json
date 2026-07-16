@@ -6,7 +6,9 @@
     "navKudos": "Sun* Kudos",
     "avatarAriaLabel": "Xem trang cá nhân của tôi",
     "profile": "Hồ sơ",
-    "logout": "Đăng xuất"
+    "logout": "Đăng xuất",
+    "loginSuccess": "Đăng nhập thành công!",
+    "logoutSuccess": "Đăng xuất thành công!"
   },
   "Footer": {
     "copyright": "Bản quyền thuộc về Sun* © 2025"
@@ -176,6 +178,7 @@
     "cancelButton": "Hủy",
     "submitButton": "Gửi",
     "submitLoading": "Đang gửi...",
+    "submitSuccess": "Gửi Kudos thành công!",
     "submitErrorFallback": "Gửi kudos thất bại. Vui lòng thử lại.",
     "submitValidationError": "Bạn cần điền đủ Người nhận, Danh hiệu, Lời nhắn gửi và Hashtag để gửi Kudos!"
   },
@@ -186,6 +189,7 @@
     "cancelButton": "Hủy",
     "saveButton": "Lưu",
     "saveLoading": "Đang lưu...",
+    "saveSuccess": "Cập nhật Kudos thành công!",
     "submitErrorFallback": "Lưu thay đổi thất bại. Vui lòng thử lại.",
     "validationError": "Bạn cần điền đủ Danh hiệu, Lời nhắn gửi và Hashtag để lưu!"
   }

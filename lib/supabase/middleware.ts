@@ -49,5 +49,31 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
+  if (user && request.nextUrl.pathname === '/login') {
+    // Already signed in — don't let them re-enter /login. Bounce back to
+    // wherever they came from (same-origin referer) so the button/bookmark
+    // just feels like a no-op, falling back to /kudos when there's no
+    // usable referer (direct URL entry, cross-origin link, etc).
+    const referer = request.headers.get('referer')
+    if (referer) {
+      try {
+        const refererUrl = new URL(referer)
+        if (
+          refererUrl.origin === request.nextUrl.origin &&
+          refererUrl.pathname !== '/login' &&
+          !refererUrl.pathname.startsWith('/auth')
+        ) {
+          return NextResponse.redirect(refererUrl)
+        }
+      } catch {
+        // malformed referer header — fall through to the default redirect
+      }
+    }
+    const url = request.nextUrl.clone()
+    url.pathname = '/kudos'
+    url.search = ''
+    return NextResponse.redirect(url)
+  }
+
   return supabaseResponse
 }

@@ -6,7 +6,9 @@
     "navKudos": "Sun* Kudos",
     "avatarAriaLabel": "View my profile",
     "profile": "Profile",
-    "logout": "Logout"
+    "logout": "Logout",
+    "loginSuccess": "Logged in successfully!",
+    "logoutSuccess": "Logged out successfully!"
   },
   "Footer": {
     "copyright": "Copyright belongs to Sun* © 2025"
@@ -176,6 +178,7 @@
     "cancelButton": "Cancel",
     "submitButton": "Send",
     "submitLoading": "Sending...",
+    "submitSuccess": "Kudos sent successfully!",
     "submitErrorFallback": "Failed to send kudos. Please try again.",
     "submitValidationError": "You need to fill in Recipient, Title, Message, and Hashtag to send Kudos!"
   },
@@ -186,6 +189,7 @@
     "cancelButton": "Cancel",
     "saveButton": "Save",
     "saveLoading": "Saving...",
+    "saveSuccess": "Kudos updated successfully!",
     "submitErrorFallback": "Failed to save changes. Please try again.",
     "validationError": "You need to fill in Title, Message, and Hashtag to save!"
   }

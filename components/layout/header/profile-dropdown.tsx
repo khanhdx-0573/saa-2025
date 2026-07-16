@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
 import { ChevronRightIcon, ProfileFilledIcon } from "@/components/layout/header/header-icons";
 
@@ -35,6 +36,7 @@ export function ProfileDropdown({ userId }: { userId: string }) {
     setIsOpen(false);
     const supabase = createClient();
     await supabase.auth.signOut();
+    toast.success(t("logoutSuccess"));
     router.push("/login");
   }
 

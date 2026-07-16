@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 import { useAuth } from "@/components/auth/auth-provider";
 import { AnonymousToggle } from "@/components/kudos/compose/anonymous-toggle";
 import { HashtagField } from "@/components/kudos/compose/hashtag-field";
@@ -90,6 +91,7 @@ export function KudosModal({ open, onClose }: KudosModalProps) {
       const mentionedProfileIds = editorRef.current?.getMentionedIds() ?? [];
       await createKudos(form.toCreateKudosInput(imagePaths, mentionedProfileIds));
       dialogRef.current?.close();
+      toast.success(t("submitSuccess"));
       // Notify the feed to refetch so the new kudos appears immediately.
       window.dispatchEvent(new CustomEvent("kudos:created"));
     } catch (err) {
