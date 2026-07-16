@@ -45,3 +45,6 @@ e2e/.auth/
 test-results/
 playwright-report/
 test-results
+
+# claude code local config/state — not shared via git
+.claude/

@@ -1,3 +1,0 @@
-[project]
-name = "auth"
-dependencies = ["fastapi>=0.100", "uvicorn>=0.22"]
